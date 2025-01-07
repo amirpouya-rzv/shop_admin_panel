@@ -4,6 +4,7 @@ import { IoIosCloseCircleOutline } from 'react-icons/io';
 import { CgMenuMotion } from 'react-icons/cg';
 import { MdOutlineInvertColors, MdOutlineProductionQuantityLimits } from 'react-icons/md';
 import { LuLayoutDashboard } from 'react-icons/lu';
+import { ImExit } from 'react-icons/im';
 
 function Sidemenu() {
   // استیت برای منوی باز و بسته
@@ -46,9 +47,9 @@ function Sidemenu() {
             }`
           }
         >
-          <span  className='flex items-center justify-end gap-2'>
-          داشبرد
-          <LuLayoutDashboard />
+          <span className='flex items-center justify-end gap-2'>
+            داشبرد
+            <LuLayoutDashboard />
           </span>
         </NavLink>
         <NavLink
@@ -94,8 +95,8 @@ function Sidemenu() {
           }
         >
           <span className='flex items-center justify-end gap-2'>
-          رنگ ها
-          <MdOutlineInvertColors />
+            رنگ ها
+            <MdOutlineInvertColors />
           </span>
         </NavLink>
 
@@ -104,7 +105,11 @@ function Sidemenu() {
           onClick={ExitButton}
           className={`hover:bg-menuHover py-3 ${menubutton ? "block text-right" : "hidden"}`}
         >
-          خروج
+          <span className='flex items-center justify-end gap-2 mx-4'>
+            خروج
+            <ImExit />
+          </span>
+
         </button>
       </div>
     </div>
