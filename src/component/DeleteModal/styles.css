@@ -1,0 +1,18 @@
+@keyframes slide-in {
+  from {
+    transform: translateY(20px); /* Starts from lower */
+    opacity: 0;  /* Invisible at start */
+  }
+  to {
+    transform: translateY(0); /* Moves to final position */
+    opacity: 1;  /* Fully visible */
+  }
+}
+
+.modal-animation {
+  animation: slide-in 1s ease-out; /* Adjusted to 1s for smooth animation */
+}
+
+.modal-container {
+  background-color: rgba(0, 0, 0, 0.5); /* Ensures the background stays gray */
+}

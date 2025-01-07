@@ -1,0 +1,15 @@
+@keyframes slide-in {
+    from {
+      transform: translateY(20px); /* از پایین‌تر می‌آید */
+      opacity: 0;  /* شفافیت صفر است */
+    }
+    to {
+      transform: translateY(0); /* در موقعیت نهایی قرار می‌گیرد */
+      opacity: 1;  /* شفافیت کامل */
+    }
+  }
+  
+  .modal-animation {
+    animation: slide-in 0.3s ease-out; /* انیمیشن با مدت زمان 0.3 ثانیه */
+  }
+  

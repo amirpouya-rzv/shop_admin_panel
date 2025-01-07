@@ -5,11 +5,10 @@ import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [visiblePassword, setVisiblePassword] = useState(false);
-  const [submit, setSubmit] = useState()
+  const [submit, setSubmit] = useState(false);
   const [data, setData] = useState({
     phone: '',
     password: '',
@@ -34,9 +33,6 @@ function Login() {
     if (!data.password) {
       newErrors.password = 'Please enter your password';
     }
-    // else if (data.password.length < 8) {
-    //   newErrors.password = 'Password must be at least 8 characters long';
-    // }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Return true if no errors
@@ -80,7 +76,7 @@ function Login() {
         console.log(data);
 
         if (res.status === 200) {
-          localStorage.setItem("loginToken", JSON.stringify(res.data));
+          localStorage.setItem('loginToken', JSON.stringify(res.data));
           navigate('/'); // Navigate if needed
         }
       })
@@ -98,76 +94,80 @@ function Login() {
       });
   };
 
-
   return (
-    <div className="flex justify-center items-center h-screen font-serif">
-      <div className="md:w-2/6 w-5/6 items-center p-10 border border-gray-300 rounded-2xl shadow-2xl">
-        <form onSubmit={sendData} className="flex flex-col gap-5">
-          <div className="flex flex-col gap-3 mb-5">
-            <label htmlFor="phone" className="cursor-pointer text-gray-600">
-              PhoneNumber:<span className="text-red-500">*</span>
-            </label>
-            <input
-              id="phone"
-              className="w-full border rounded-3xl p-2 ring-gray-100 shadow-xl outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 "
-              type="text"
-              placeholder="Enter your phone number"
-              value={data.phone}
-              onChange={handleInputChange}
-            />
-            {errors.phone && <span className="text-red-500 animate-pulse">{errors.phone}</span>}
-          </div>
-          <div className="flex flex-col gap-3">
-            <label htmlFor="password" className="cursor-pointer text-gray-600">
-              Password:<span className="text-red-500">*</span>
-            </label>
-            <div className="relative">
-              <input
-                id="password"
-                className="w-full border rounded-3xl p-2 ring-gray-100 shadow-xl outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 "
-                type={visiblePassword ? 'text' : 'password'}
-                placeholder="Enter your password"
-                value={data.password}
-                onChange={handleInputChange}
-              />
-              <button
-                onClick={togglePasswordVisibility}
-                className={`absolute top-2.5 right-5 ${visiblePassword ? 'text-black' : 'text-gray-500'
-                  }`}
-                type="button"
-              >
-                {visiblePassword ? <FaRegEye /> : <FaRegEyeSlash />}
-              </button>
-            </div>
-            {errors.password && <span className="text-red-500 animate-pulse">{errors.password}</span>}
-          </div>
-          <div className="flex items-center gap-3">
-            <input
-              id="remember"
-              type="checkbox"
-              checked={data.remember}
-              onChange={handleInputChange}
-            />
-            <label htmlFor="remember" className="cursor-pointer text-gray-600">
-              Remember Me
-            </label>
-          </div>
-          <button
-            type="submit"
-            className="border bg-green-500 text-white rounded-3xl flex justify-center items-center py-2 mt-5"
-            disabled={submit}
-          >
-            {submit ? (
-              <div className='flex items-center gap-1'>
-                <span>submitting...</span>
-                <LoaderIcon />
+    <>
+      <div className="relative h-screen bg-cover bg-center" style={{ backgroundImage: "url('/image/cole-keister-xMMh-VFGL9M-unsplash.jpg')" }}>
+        <div className="flex justify-center items-center h-full font-serif">
+          <div className="md:w-2/6 w-5/6 items-center p-10 border border-gray-300 rounded-2xl shadow-2xl bg-white bg-opacity-80">
+            <form onSubmit={sendData} className="flex flex-col gap-5">
+              <div className="flex flex-col gap-3 mb-5">
+                <label htmlFor="phone" className="font-vazirmatn cursor-pointer text-gray-600">
+                  شماره همراه:<span className="text-red-500">*</span>
+                </label>
+                <input
+                  id="phone"
+                  className="w-full border rounded-3xl p-2 ring-gray-100 shadow-xl outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
+                  type="text"
+                  placeholder="Enter your phone number"
+                  value={data.phone}
+                  onChange={handleInputChange}
+                />
+                {errors.phone && <span className="text-red-500 animate-pulse">{errors.phone}</span>}
               </div>
-            ) : "Submit"}
-          </button>
-          {errors.global && <span className="text-red-500 text-center mt-3 animate-pulse">{errors.global}</span>}
-        </form>
+              <div className="flex flex-col gap-3">
+                <label htmlFor="password" className="font-vazirmatn cursor-pointer text-gray-600">
+                  رمز عبور:<span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    id="password"
+                    className="w-full border rounded-3xl p-2 ring-gray-100 shadow-xl outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
+                    type={visiblePassword ? 'text' : 'password'}
+                    placeholder="Enter your password"
+                    value={data.password}
+                    onChange={handleInputChange}
+                  />
+                  <button
+                    onClick={togglePasswordVisibility}
+                    className={`absolute top-2.5 right-5 ${visiblePassword ? 'text-black' : 'text-gray-500'}`}
+                    type="button"
+                  >
+                    {visiblePassword ? <FaRegEye /> : <FaRegEyeSlash />}
+                  </button>
+                </div>
+                {errors.password && <span className="text-red-500 animate-pulse">{errors.password}</span>}
+              </div>
+              <div className="flex items-center gap-3">
+                <input
+                  id="remember"
+                  type="checkbox"
+                  checked={data.remember}
+                  onChange={handleInputChange}
+                />
+                <label htmlFor="remember" className="font-vazirmatn cursor-pointer text-gray-600">
+                  مرا به خاطر نگه دار
+                </label>
+              </div>
+              <button
+                type="submit"
+                className="border bg-green-500 font-vazirmatn text-white rounded-3xl flex justify-center items-center py-2 mt-5"
+                disabled={submit}
+              >
+                {submit ? (
+                  <div className="flex items-center gap-1">
+                    <span>لطفا کمی صبر کنید...</span>
+                    <LoaderIcon />
+                  </div>
+                ) : (
+                  'ورود'
+                )}
+              </button>
+              {errors.global && <span className="text-red-500 text-center mt-3 animate-pulse">{errors.global}</span>}
+            </form>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
