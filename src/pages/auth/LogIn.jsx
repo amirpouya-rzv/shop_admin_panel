@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { LoaderIcon } from 'react-hot-toast';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { urlAxios } from '../../Services/URL';
 
 function Login() {
   const navigate = useNavigate();
@@ -67,7 +68,7 @@ function Login() {
 
     setSubmit(true); // Set submitting state
 
-    axios.post('http://ecomadminapi.azhadev.ir/api/auth/login', {
+    urlAxios.post('/auth/login', {
       ...data,
       remember: data.remember ? '1' : '0',
     })

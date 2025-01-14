@@ -22,7 +22,6 @@ const Colors = () => {
 
   const handleDeleteConfirm = () => {
     // Handle the deletion logic here (remove the item by `itemIdToDelete`)
-    console.log('Item deleted with ID:', itemIdToDelete);
     setIsDeleteModalOpen(false); // Close the delete modal after confirmation
   };
 
