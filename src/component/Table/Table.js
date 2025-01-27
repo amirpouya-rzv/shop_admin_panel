@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
+import { Link } from "react-router-dom";
 
-function Table({ data, datainfo, AdditionalFeild , searchparams, onAddButtonClick }) {
-    const [filteredData, setFilteredData] = useState(data); 
+function Table({ data, datainfo, AdditionalFeild, searchparams, onAddButtonClick }) {
+    const [filteredData, setFilteredData] = useState(data);
     const [searchChat, setSearChChat] = useState("");
 
     useEffect(() => {
         if (searchChat.trim() === "") {
-            setFilteredData(data); 
+            setFilteredData(data);
         } else {
             setFilteredData(data.filter(value => {
                 return (
@@ -40,12 +41,13 @@ function Table({ data, datainfo, AdditionalFeild , searchparams, onAddButtonClic
                 </div>
 
                 {/* اضافه کردن ایتم */}
-                <button
-                    onClick={onAddButtonClick} 
-                    className="bg-teal-950 text-white px-3 py-1 rounded items-end"
-                >
-                    +
-                </button>
+                <Link to={'/admin/addcategories'}>
+                    <button
+                        className="bg-teal-950 text-white px-3 py-1 rounded items-end"
+                    >
+                        +
+                    </button>
+                </Link>
             </div>
 
             <table className="w-11/12 mx-auto text-sm border-collapse border border-gray-100 text-dark">

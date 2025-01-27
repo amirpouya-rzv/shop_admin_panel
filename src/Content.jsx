@@ -6,6 +6,7 @@ import Dashbord from './pages/dashboard/Dashbord'
 import Products from './pages/category/Products'
 import Colors from './pages/colors/Colors'
 import Categories from './pages/category/Categories'
+import Addcategories from './pages/category/Addcategories'
 function Content() {
   return (
     <Routes>
@@ -17,6 +18,9 @@ function Content() {
       </Route>
       <Route path='/admin/addproduct' element={<Products />} />
       <Route path='/admin/colors' element={<Colors />} />
+      <Route path={'/admin/addcategories'} element={<Addcategories />} >
+      <Route path=':productId' />
+      </Route>
 
     </Routes>
   )
