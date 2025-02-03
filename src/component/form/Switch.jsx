@@ -18,7 +18,7 @@ function Switch({ name, label }) {
                         />
                         <div
                             className="w-full h-full bg-gray-300 peer-focus:ring-2 
-                            peer-focus:ring-blue-300 peer-checked:bg-blue-500 
+                            peer-focus:ring-sky-300 peer-checked:bg-sky-500 
                             rounded-full transition duration-300"
                         ></div>
                         <div

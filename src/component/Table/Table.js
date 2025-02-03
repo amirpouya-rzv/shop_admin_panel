@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
-import { Link } from "react-router-dom";
-
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import Loader from "../loader/Loader";
+import { IoIosArrowRoundBack } from "react-icons/io";
 function Table({ data, datainfo, AdditionalFeild, searchparams, onAddButtonClick }) {
+
+    const navigate = useNavigate();
+    const Params = useParams();
+    const location = useLocation();
+    console.log(location)
     const [filteredData, setFilteredData] = useState(data);
     const [searchChat, setSearChChat] = useState("");
 
@@ -39,7 +45,6 @@ function Table({ data, datainfo, AdditionalFeild, searchparams, onAddButtonClick
                         <CiSearch size={24} />
                     </div>
                 </div>
-
                 {/* اضافه کردن ایتم */}
                 <Link to={'/admin/addcategories'}>
                     <button
@@ -49,38 +54,50 @@ function Table({ data, datainfo, AdditionalFeild, searchparams, onAddButtonClick
                     </button>
                 </Link>
             </div>
+            {/* Table */}
+            {
+                data.length ?
+                    (
+                        <div>
+                            <table className="w-11/12 mx-auto text-sm border-collapse border border-gray-100 text-dark">
+                                <thead className='bg-gray-300'>
+                                    <tr>
+                                        {/* فیلدهای اصلی */}
+                                        {datainfo.map((item, index) => (
+                                            <th key={index} className='p-5 border text-pink'>{item.title}</th>
+                                        ))}
+                                        {/* فیلد های اضافی */}
+                                        {AdditionalFeild.length > 0 &&
+                                            AdditionalFeild.map((a, index) => (
+                                                <th key={index} className='p-5 border md:tabl'>{a.title}</th>
+                                            ))}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {/* فیلد های اصلی */}
+                                    {filteredData.map((item, index) => (
+                                        <tr key={index} className='border-b hover:bg-gray-200'>
+                                            {/* Render table data based on field names */}
+                                            {datainfo.map((info, idx) => (
+                                                <td key={idx} className='p-5 text-center border'>{item[info.feild]}</td>
+                                            ))}
+                                            {/* فیلد های اضافی */}
+                                            {AdditionalFeild.length > 0 &&
+                                                AdditionalFeild.map((a, idx) => (
+                                                    <td key={idx} className='p-5 border'>{a.elements(item)}</td>
+                                                ))}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    ) : (
+                        <div>
+                            <h1 className="text-rose-900 drop-shadow-2xl mt-36 text-3xl text-center">داده ای وجود ندارد</h1>
+                        </div>
+                    )
+            }
 
-            <table className="w-11/12 mx-auto text-sm border-collapse border border-gray-100 text-dark">
-                <thead className='bg-gray-300'>
-                    <tr>
-                        {/* فیلدهای اصلی */}
-                        {datainfo.map((item, index) => (
-                            <th key={index} className='p-5 border'>{item.title}</th>
-                        ))}
-                        {/* فیلد های اضافی */}
-                        {AdditionalFeild.length > 0 &&
-                            AdditionalFeild.map((a, index) => (
-                                <th key={index} className='p-5 border md:tabl'>{a.title}</th>
-                            ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {/* فیلد های اصلی */}
-                    {filteredData.map((item, index) => (
-                        <tr key={index} className='border-b hover:bg-gray-200'>
-                            {/* Render table data based on field names */}
-                            {datainfo.map((info, idx) => (
-                                <td key={idx} className='p-5 text-center border'>{item[info.feild]}</td>
-                            ))}
-                            {/* فیلد های اضافی */}
-                            {AdditionalFeild.length > 0 &&
-                                AdditionalFeild.map((a, idx) => (
-                                    <td key={idx} className='p-5 border'>{a.elements(item)}</td>
-                                ))}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
         </div>
     );
 }

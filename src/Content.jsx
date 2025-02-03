@@ -13,15 +13,17 @@ function Content() {
       <Route path='/login' element={<Login />} />
       <Route path='*' element={<Dashbord />} />
       <Route path='/admin/album' element={<Album />} />
+      
       <Route path='/admin/categories' element={<Categories />}>
         <Route path=':categoriesId' />
       </Route>
-      <Route path='/admin/addproduct' element={<Products />} />
-      <Route path='/admin/colors' element={<Colors />} />
       <Route path={'/admin/addcategories'} element={<Addcategories />} >
       <Route path=':productId' />
       </Route>
 
+      <Route path='/admin/addproduct' element={<Products />} />
+      <Route path='/admin/colors' element={<Colors />} />
+      
     </Routes>
   )
 }

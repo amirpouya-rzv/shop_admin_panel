@@ -7,183 +7,121 @@ import { Toaster, toast } from "react-hot-toast";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 
-const Addcategories = () => {
+const AddCategories = () => {
 
+    //مسیر یابی
     const navigate = useNavigate();
 
-
+    //شناسه محصول
+    const { productId } = useParams();
+    
+    //نمایش در منو
     const showInMenuOptions = [
-        { id: "نمایش دادن", value: "پنهان کردن" },
+        { id: "پنهان کردن", value: false },
+        { id: "نمایش دادن", value: true },
     ];
-
+    //وضعیت فعال بودن
     const isActiveOptions = [
-        { id: "فعال", value: "غیر فعال" },
+        { id: "غیر فعال", value: false },
+        { id: "فعال", value: true },
     ];
-
-    const [initialValues,setInitialValues] = useState(
-        {
-            title: "",
-            description: "",
-            parent_id: "",
-            is_active: false,
-            show_in_menu: false,
-            image: null,
-        }
-    )
-
-    const validationSchema = Yup.object({
-        parent_id: Yup.number(),
-        title: Yup.string().required("عنوان دسته ضروری است"),
-        description: Yup.string(),
-        image: Yup.mixed()
-            .nullable()
-            .test(
-                "fileformat",
-                "فرمت فایل باید jpg یا png باشد",
-                (value) =>
-                    !value || ["image/jpeg", "image/png"].includes(value?.type)
-            ),
+    //اطلاعات اولیه
+    const [parentCategories, setParentCategories] = useState([]);
+    const [initialValues, setInitialValues] = useState({
+        title: "",
+        description: "",
+        parent_id: "",
+        is_active: false,
+        show_in_menu: false,
+        image: null,
     });
 
-
-
-    // Get parent categories
-    const [parent, setParent] = useState([]);
-    const handelgetparentcategoris = (id) => {
-        urlAxios.get(`/admin/categories${id ? `?parent=${id}` : ""}`)
-            .then(res => {
-                if (res.status === 200) {
-                    const allParents = res.data.data;
-                    setParent(allParents.map(p => ({ id: p.id, value: p.title })));
-                } else {
-                    toast.error("مشکل در دریافت اطلاعات");
-                }
-            })
-            .catch(err => console.log(err));
-    };
-
+    //دریافت دسته‌بندی‌ها
     useEffect(() => {
-        handelgetparentcategoris();
+        urlAxios.get(`/admin/categories`).then(res => {
+            if (res.status === 200) {
+                setParentCategories(res.data.data.map(p => ({ id: p.id, value: p.title })));
+            } else {
+                toast.error("مشکل در دریافت اطلاعات دسته‌بندی‌ها");
+            }
+        }).catch(err => console.log(err));
     }, []);
 
-    const onSubmit = (values, { setSubmitting, resetForm }) => {
-        values = {
-            ...values,
-            is_active: values.is_active ? 1 : 0,
-            show_in_menu: values.show_in_menu ? 1 : 0,
-        };
-
-        const formData = new FormData();
-        formData.append('title', values.title);
-        formData.append('description', values.description);
-        formData.append('parent_id', values.parent_id);
-        formData.append('show_in_menu', values.show_in_menu);
-        formData.append('is_active', values.is_active);
-
-        if (values.image) {
-            formData.append('image', values.image);
+    //ادیت کردن دسته
+    useEffect(() => {
+        if (productId) {
+            urlAxios.get(`/admin/categories/${productId}`)
+                .then(res => {
+                    console.log(res);
+                    if (res.status === 200) {
+                        setInitialValues({
+                            title: res.data.data.title,
+                            description: res.data.data.description,
+                            parent_id: res.data.data.parent_id || "",
+                            is_active: res.data.data.is_active === 1,
+                            show_in_menu: res.data.data.show_in_menu === 1,
+                            image: null,
+                        });
+                    }
+                })
+                .catch(err => console.log(err));
         }
+    }, [productId]);
+    //ویلیدیشن
+    const validationSchema = Yup.object({
+        title: Yup.string().required("عنوان دسته ضروری است"),
+        description: Yup.string(),
+        parent_id: Yup.number(),
+        image: Yup.mixed()
+            .nullable()
+            .test("fileformat", "فرمت فایل باید jpg یا png باشد", (value) =>
+                !value || ["image/jpeg", "image/png"].includes(value?.type)
+            ),
+    });
+    //ارسال اطلاعات
+    const onSubmit = (values, { setSubmitting, resetForm }) => {
+        const formData = new FormData();
+        formData.append("title", values.title);
+        formData.append("description", values.description);
+        formData.append("parent_id", values.parent_id || "");
+        formData.append("show_in_menu", values.show_in_menu ? 1 : 0);
+        formData.append("is_active", values.is_active ? 1 : 0);
+        if (values.image) formData.append("image", values.image);
 
-        urlAxios.post(`/admin/categories`, formData)
-            .then((res) => {
-                console.log(res)
-                if (res.status === 201) {
-                    toast.success("دسته جدید با موفقیت اضافه شد");
-                    resetForm();
-                }
-            }).catch((err) => {
-                toast.error("اشکال در بارگزاری اطلاعات");
-            });
+        const request = productId
+            ? urlAxios.put(`/admin/categories/${productId}`, formData)
+            : urlAxios.post(`/admin/categories`, formData);
+
+        request.then(res => {
+            if (res.status === 200 || res.status === 201) {
+                toast.success(res.data.message);
+                resetForm();
+                navigate("/admin/categories");
+            }
+        }).catch(err => toast.error("خطا در ارسال اطلاعات"));
 
         setSubmitting(false);
     };
 
-//ویرایش دسته
-const {productId} = useParams();
-useEffect(()=>{
-urlAxios.get(`/admin/categories/${productId}`)
-.then(res=>{console.log(res)
-    setInitialValues({
-        title: res.data.data.title,
-        description: res.data.data.description,
-        parent_id: res.data.data.parent_id,
-        is_active: res.data.data.is_active,
-        show_in_menu: res.data.data.show_in_menu,
-        image: null,
-    })
-})
-
-})
-
     return (
-        <Formik
-            initialValues={initialValues}
-            onSubmit={onSubmit}
-            validationSchema={validationSchema}
-            enableReinitialize={true}
-        >
-            <>
-                <Form
-                    className="w-10/12 mx-auto mt-10 bg-white p-6 rounded shadow mb-6"
-                    style={{ direction: "rtl" }}
-                >
-                    <div>
-                        <IoIosArrowBack onClick={() => navigate("/admin/categories")} size={20} className="cursor-pointer mx-[1050px]"
-                        />
-                    </div>
+        <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema} enableReinitialize>
+            <Form className="w-10/12 mx-auto mt-10 bg-white p-6 rounded shadow mb-6" style={{ direction: "rtl" }}>
+                <IoIosArrowBack onClick={() => navigate("/admin/categories")} size={20} className="mx-[270px] md:mx-[1060px] cursor-pointer" />
+                <Toaster position="top-center" reverseOrder={false} />
+                <h2 className="text-xl font-semibold mb-4 mt-10">{productId ? "ویرایش دسته" : "افزودن دسته جدید"}</h2>
 
-                    <Toaster position="top-center" reverseOrder={false} />
-                    <h2 className="text-xl font-semibold mb-4 mt-10">افزودن دسته جدید</h2>
+                {parentCategories.length > 0 && <FormikControl control="select" label="دسته والد:" name="parent_id" options={parentCategories} />}
+                <FormikControl control="input" type="text" label="عنوان دسته:" name="title" />
+                <ErrorMessage name="title" component="div" className="text-red-500 text-sm" />
+                <FormikControl control="textarea" label="توضیحات:" name="description" placeholder="توضیحات" />
+                <FormikControl control="file" label="تصویر" name="image" />
+                <FormikControl control="switch" name="show_in_menu" label="نمایش در منو" />
+                <FormikControl control="switch" name="is_active" label="وضعیت فعال" />
 
-                    {parent.length > 0 &&
-                        <FormikControl
-                            control="select"
-                            label="دسته والد:"
-                            name="parent_id"
-                            options={parent}
-                        />
-                    }
-                    <FormikControl
-                        control="input"
-                        type="text"
-                        label="عنوان دسته:"
-                        name="title"
-                    />
-                    <ErrorMessage name="title" component="div" className="text-red-500 text-sm" />
-
-                    <FormikControl
-                        control="textarea"
-                        label="توضیحات:"
-                        name="description"
-                        placeholder="توضیحات"
-                    />
-
-                    <FormikControl
-                        control="file"
-                        label="تصویر"
-                        name="image"
-                    />
-                    <FormikControl
-                        control="switch"
-                        name="show_in_menu"
-                        label="نمایش در منو"
-                    />
-                    <FormikControl
-                        control="switch"
-                        name="is_active"
-                        label="وضعیت فعال"
-                    />
-
-                    <button
-                        type="submit"
-                        className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
-                    >
-                        ارسال
-                    </button>
-                </Form>
-            </>
+                <button type="submit" className="mt-4 bg-dark text-white py-2 px-4 rounded">{productId ? "ویرایش" : "ارسال"}</button>
+            </Form>
         </Formik>
     );
 };
 
-export default Addcategories;
+export default AddCategories;

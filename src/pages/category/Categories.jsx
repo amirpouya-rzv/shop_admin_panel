@@ -8,71 +8,79 @@ import { VscTypeHierarchySub } from 'react-icons/vsc';
 import { urlAxios } from '../../Services/URL';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import moment from 'jalali-moment';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
+
 const Category = () => {
-  const params = useParams()
-  const navigate = useNavigate()
+  const params = useParams();
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [itemIdToDelete, setItemIdToDelete] = useState(null);
 
-  //مدال اضافه کردن آیتم 
+
+  // انتخاب زیر دسته ها   
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);  //ذخیره زیر دسته‌ها
+  const [subCategories, setSubCategories] = useState([]); // ذخیره زیر دسته‌ها
+
+  // مدال اضافه کردن آیتم
   const handleModalOpen = () => setIsModalOpen(true);
   const handleModalClose = () => setIsModalOpen(false);
 
-  const [flag, setFlag] = useState(false)
   // مدال حذف
+  const [flag, setFlag] = useState(false)
   const handleDeleteModalOpen = (id) => {
-    setItemIdToDelete(id); // Set the item ID to delete
-    setIsDeleteModalOpen(true); // Open the delete modal
+    setItemIdToDelete(id);  // Set the item ID to delete
+    setIsDeleteModalOpen(true);  // Open the delete modal
   };
   const handleDeleteModalClose = () => setIsDeleteModalOpen(false);
 
-
-  //حذف داده
+  // حذف داده
   const handleDeleteConfirm = (id) => {
     urlAxios.delete(`/admin/categories/${id}`)
       .then(res => {
         if (res.status === 201) {
-          toast.success('دسته با موفقیت حذف شد');
-        } else {
-          toast.error('خطا در حذف دسته');
+          toast.success(`${res.data.message}`);
         }
+        setFlag(!flag)
       })
       .catch(err => {
         console.log(err);
-        toast.error('خطا در حذف دسته');
+        toast.error(`${err.data.message}`);
       });
     setIsDeleteModalOpen(false);
   };
 
-  //دریافت اطلاعات
-  const [data, setData] = useState([])
-  useEffect((id = null) => {
-    urlAxios.get(`/admin/categories${id ? `parent=${id}` : ""}`)
+  // دریافت اطلاعات
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    urlAxios.get(`/admin/categories${selectedCategoryId ? `?parent=${selectedCategoryId}` : ""}`)
       .then(res => {
         if (res.status === 200) {
-          console.log(res)
-          setData(res.data.data)
-          setFlag(!flag);
-        } else {
+          if (selectedCategoryId) {
+            setSubCategories(res.data.data);
+            // ذخیره داده‌های زیر دسته‌ها
+          } else {
+            setData(res.data.data);  // ذخیره داده‌های اصلی
+          }
         }
       })
-      .catch(err => { console.log(err) })
-  }, [params, flag])
+      .catch(err => {
+        console.log(err);
+      });
+  }, [params, selectedCategoryId, flag]);
 
-
-  // داده های اصلی 
+  // داده‌های اصلی
   const datainfo = [
     { feild: 'id', title: '#' },
     { feild: 'title', title: 'عنوان محصول' },
   ];
 
-
-
-
-  //فیلد های اضافی در جدول
+  // فیلدهای اضافی برای دسته‌ها
   const AdditionalFeild = [
+    // {
+    //   title: 'والد',
+    //   elements: (rowdata) => rowdata.parent_title || "-----",
+    // },
     {
       title: 'تاریخ',
       elements: (rowdata) => moment(rowdata.creat_at).format('jYYYY/jMM/jDD'),
@@ -85,60 +93,73 @@ const Category = () => {
       title: 'عملیات',
       elements: (rowdata) => additionalElements(rowdata),
     },
-  ]
+  ];
 
+  // فیلدهای اضافی برای زیر دسته‌ها
+  const SubCategoryAdditionalFeild = [
+    {
+      title: 'زیر دسته عنوان',
+      elements: (rowdata) => rowdata.sub_category_title || "-",
+    },
+    {
+      title: 'تاریخ ایجاد',
+      elements: (rowdata) => moment(rowdata.create_at).format('jYYYY/jMM/jDD'),
+    },
+    {
+      title: 'عملیات',
+      elements: (rowdata) => additionalElements(rowdata),
+    },
+  ];
 
-
-
-  //ذاذه های اضافی
+  // فیلدهای اضافی برای عملیات
   const additionalElements = ({ id }) => {
     return (
       <div className="text-xl text-center flex justify-center gap-1 title-font font-medium items-center">
-        <Link  to={`/admin/addcategories/${id}`}>
-          <button title='زیر دسته ها' >
-            <VscTypeHierarchySub className="text-primary" />
-          </button>
-        </Link>
+        <Toaster position="top-center" reverseOrder={false} />
+        <button onClick={() => setSelectedCategoryId(id)} title="زیر دسته‌ها">
+          <VscTypeHierarchySub className="text-yellow-500" />
+        </button>
         <Link to={`/admin/addcategories/${id}`}>
-          <button title='ویرایش' >
-            <MdOutlineModeEdit className="text-teal-500" />
+          <button title="ویرایش">
+            <MdOutlineModeEdit className="text-sky-500" />
           </button>
         </Link>
-        <button title='حذف' onClick={() => handleDeleteModalOpen(id)}>
-          <RiDeleteBinLine className="text-rose-500" />
+        <button title="حذف" onClick={() => handleDeleteModalOpen(id)}>
+          <RiDeleteBinLine className="text-rose-700" />
         </button>
       </div>
     );
   };
 
-
-  //داده های اضافی
+  // نمایش در منو
   const showinmenu = (rowdata) => {
     return (
       <span className='text-center'>
         {
           rowdata.show_in_menu ?
-            (<p className='text-secondary'>موجود هست</p>)
-            :
-            (<p className='text-rose-800'>موجود نیست</p>)
+            (<p className='text-white border md:rounded-full bg-teal-800 sm:rounded-none'>موجود هست</p>) :
+            (<p className='text-white border rounded-full bg-rose-800'>موجود نیست</p>)
         }
       </span>
-    )
-  }
+    );
+  };
 
-  //جستوجو
+  // جستجو
   const searchparams = {
-    title: 'جستوجو',
+    title: 'جستجو',
     placeholder: 'قسمتی از عنوان رو جست و جو کنید',
     searchfeild: 'title',
   };
 
+  // داده‌ها برای نمایش
+  const dataToDisplay = selectedCategoryId ? subCategories : data;
+
   return (
     <div>
       <Table
-        data={data}
+        data={dataToDisplay}
         datainfo={datainfo}
-        AdditionalFeild={AdditionalFeild}
+        AdditionalFeild={selectedCategoryId ? SubCategoryAdditionalFeild : AdditionalFeild}
         searchparams={searchparams}
         onAddButtonClick={handleModalOpen}
       />
