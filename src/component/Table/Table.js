@@ -1,34 +1,32 @@
 import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import Loader from "../loader/Loader";
-import { IoIosArrowRoundBack } from "react-icons/io";
-function Table({ data, datainfo, AdditionalFeild, searchparams, onAddButtonClick }) {
+import { Link } from "react-router-dom";
 
-    const navigate = useNavigate();
-    const Params = useParams();
-    const location = useLocation();
-    console.log(location)
+function Table({ data, datainfo, AdditionalFeild }) {
     const [filteredData, setFilteredData] = useState(data);
     const [searchChat, setSearChChat] = useState("");
 
+    // صفحه‌بندی
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5; // تعداد آیتم‌ها در هر صفحه
+
+    // محاسبه کل صفحات
+    const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+    // فیلتر داده‌ها براساس جستجو
     useEffect(() => {
         if (searchChat.trim() === "") {
             setFilteredData(data);
         } else {
-            setFilteredData(data.filter(value => {
-                return (
-                    value.title.toLowerCase().includes(searchChat.toLowerCase()) ||
-                    datainfo.some(info => {
-                        if (typeof value[info.feild] === "number") {
-                            return value[info.feild].toString().includes(searchChat);
-                        }
-                        return false;
-                    })
-                );
-            }));
+            setFilteredData(data.filter(value =>
+                value.title.toLowerCase().includes(searchChat.toLowerCase())
+            ));
         }
-    }, [data, searchChat, datainfo]);
+        setCurrentPage(1); // هنگام جستجو، صفحه اول را نمایش بده
+    }, [data, searchChat]);
+
+    // برش داده‌های جدول برای نمایش صفحه جاری
+    const currentData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     return (
         <div className='mt-20 text-center' style={{ direction: 'rtl' }}>
@@ -36,7 +34,7 @@ function Table({ data, datainfo, AdditionalFeild, searchparams, onAddButtonClick
                 {/* Search box */}
                 <div className="relative w-full max-w-md">
                     <input
-                        onChange={(e) => setSearChChat(e.target.value)} // Update search term
+                        onChange={(e) => setSearChChat(e.target.value)}
                         type="search"
                         className="flex justify-start py-2 w-full px-5 pr-12 rounded-2xl text-right outline-none border border-gray-300 focus:border-2 focus:border-menuHover"
                         placeholder="جستجو ..."
@@ -45,60 +43,72 @@ function Table({ data, datainfo, AdditionalFeild, searchparams, onAddButtonClick
                         <CiSearch size={24} />
                     </div>
                 </div>
-                {/* اضافه کردن ایتم */}
+                {/* اضافه کردن آیتم */}
                 <Link to={'/admin/addcategories'}>
-                    <button
-                        className="bg-teal-950 text-white px-3 py-1 rounded items-end"
-                    >
+                    <button className="bg-teal-950 text-white px-3 py-1 rounded">
                         +
                     </button>
                 </Link>
             </div>
-            {/* Table */}
-            {
-                data.length ?
-                    (
-                        <div>
-                            <table className="w-11/12 mx-auto text-sm border-collapse border border-gray-100 text-dark">
-                                <thead className='bg-gray-300'>
-                                    <tr>
-                                        {/* فیلدهای اصلی */}
-                                        {datainfo.map((item, index) => (
-                                            <th key={index} className='p-5 border text-pink'>{item.title}</th>
-                                        ))}
-                                        {/* فیلد های اضافی */}
-                                        {AdditionalFeild.length > 0 &&
-                                            AdditionalFeild.map((a, index) => (
-                                                <th key={index} className='p-5 border md:tabl'>{a.title}</th>
-                                            ))}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {/* فیلد های اصلی */}
-                                    {filteredData.map((item, index) => (
-                                        <tr key={index} className='border-b hover:bg-gray-200'>
-                                            {/* Render table data based on field names */}
-                                            {datainfo.map((info, idx) => (
-                                                <td key={idx} className='p-5 text-center border'>{item[info.feild]}</td>
-                                            ))}
-                                            {/* فیلد های اضافی */}
-                                            {AdditionalFeild.length > 0 &&
-                                                AdditionalFeild.map((a, idx) => (
-                                                    <td key={idx} className='p-5 border'>{a.elements(item)}</td>
-                                                ))}
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    ) : (
-                        <div>
-                            <h1 className="text-rose-900 drop-shadow-2xl mt-36 text-3xl text-center">داده ای وجود ندارد</h1>
-                        </div>
-                    )
-            }
 
+            {/* Table */}
+            {currentData.length > 0 ? (
+                <div>
+                    <table className="w-11/12 mx-auto text-sm border-collapse border border-gray-100 text-dark">
+                        <thead className='bg-gray-300'>
+                            <tr>
+                                {datainfo.map((item, index) => (
+                                    <th key={index} className='p-5 border'>{item.title}</th>
+                                ))}
+                                {AdditionalFeild.length > 0 &&
+                                    AdditionalFeild.map((a, index) => (
+                                        <th key={index} className='p-5 border'>{a.title}</th>
+                                    ))
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {currentData.map((item, index) => (
+                                <tr key={index} className='border-b hover:bg-gray-200'>
+                                    {datainfo.map((info, idx) => (
+                                        <td key={idx} className='p-5 text-center border'>{item[info.feild]}</td>
+                                    ))}
+                                    {AdditionalFeild.length > 0 &&
+                                        AdditionalFeild.map((a, idx) => (
+                                            <td key={idx} className='p-5 border'>{a.elements(item)}</td>
+                                        ))
+                                    }
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+
+                    {/* Pagination */}
+                    <div className="flex justify-center mt-4 space-x-2">
+                        <button
+                            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                            disabled={currentPage === 1}
+                            className={`px-4 py-1 rounded-full ${currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-sky-500 hover:bg-sky-600 text-white"}`}
+                        >
+                            قبلی
+                        </button>
+
+                        <span className="px-5 ">{currentPage} از {totalPages}</span>
+
+                        <button
+                            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                            disabled={currentPage === totalPages}
+                            className={`px-3.5 py-1 rounded-full ${currentPage === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-sky-500 hover:bg-sky-600 text-white"}`}
+                        >
+                            بعدی
+                        </button>
+                    </div>
+                </div>
+            ) : (
+                <h1 className="text-rose-900 mt-36 text-3xl">داده‌ای وجود ندارد</h1>
+            )}
         </div>
     );
 }
+
 export default Table;

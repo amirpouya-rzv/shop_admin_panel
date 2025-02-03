@@ -45,7 +45,7 @@ const App = (menubutton) => {
   }, [navigate]);
 
   return (
-    <div className={`font-vazirmatn`}>
+    <div className={`font-vazirmatn mb-10`}>
       {location.pathname.includes("/auth/login") ? (
         <LoginAuth />
       ) : (
