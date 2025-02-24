@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { Link } from "react-router-dom";
+import Loader from "../loader/Loader";
 
 function Table({ data, datainfo, AdditionalFeild }) {
     const [filteredData, setFilteredData] = useState(data);
@@ -105,8 +106,7 @@ function Table({ data, datainfo, AdditionalFeild }) {
                     </div>
                 </div>
             ) : (
-                <h1 className="text-rose-900 mt-36 text-3xl">داده‌ای وجود ندارد</h1>
-            )}
+                <Loader />)}
         </div>
     );
 }
