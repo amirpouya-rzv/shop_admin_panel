@@ -49,14 +49,25 @@ const App = (menubutton) => {
       {location.pathname.includes("/auth/login") ? (
         <LoginAuth />
       ) : (
-        <div className={`grid grid-cols-12`}>
-          <div className={`col-span-10  ${menubutton ? 'col-span-12 ' : 'col-span-10'} `}>
-            <Content />
-          </div>
-          <div className={`col-span-2 ${menubutton ? 'col-span-0 ' : 'col-span-2'} `}>
-            <Sidebar />
+        <div
+          className="h-fit bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('')`,
+            backgroundSize: "cover",
+          }}
+        >
+          {/* محتوای داخل صفحه */}
+          <div className="grid grid-cols-12 min-h-screen">
+            <div className={`col-span-10 ${menubutton ? 'col-span-12' : 'col-span-10'}`}>
+              <Content />
+            </div>
+            <div className={`col-span-2 ${menubutton ? 'col-span-0' : 'col-span-2'}`}>
+              <Sidebar />
+            </div>
           </div>
         </div>
+
+
       )}
     </div>
   );

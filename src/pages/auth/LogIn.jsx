@@ -97,9 +97,9 @@ function Login() {
 
   return (
     <>
-      <div className="relative h-screen bg-cover bg-center" style={{ backgroundImage: "url('/image/cole-keister-xMMh-VFGL9M-unsplash.jpg')" }}>
+      <div className="relative h-screen bg-contain bg-center" style={{ backgroundImage: "url('/image/cole-keister-xMMh-VFGL9M-unsplash.jpg')" }}>
         <div className="flex justify-center items-center h-full font-serif">
-          <div className="md:w-2/6 w-5/6 items-center p-10 border border-gray-300 rounded-2xl shadow-2xl bg-white bg-opacity-80">
+          <div className="md:w-2/6 w-5/6 items-center p-10 border border-gray-300 rounded-2xl shadow-2xl bg-white bg-opacity-50">
             <form onSubmit={sendData} className="flex flex-col gap-5">
               <div className="flex flex-col gap-3 mb-5">
                 <label htmlFor="phone" className="font-vazirmatn cursor-pointer text-gray-600">

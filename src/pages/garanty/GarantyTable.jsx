@@ -11,15 +11,16 @@ import { ErrorMessage, Form, Formik } from "formik";
 import FormikControl from "../../component/form/FormikControl";
 import * as Yup from "yup";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import Loader from "../../component/loader/Loader";
 
-const BrandsTable = () => {
+const GarantyTable = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [itemIdToDelete, setItemIdToDelete] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loader, setLoader] = useState(false);
     const [data, setData] = useState([]);
     const [flag, setFlag] = useState(false)
-    const [editbrand, setEditBrand] = useState(null);
+    const [editgarranty, setEditGarranty] = useState(null);
 
     const handleModalClose = () => setIsModalOpen(false);
     const handleDeleteModalOpen = (id) => {
@@ -31,27 +32,15 @@ const BrandsTable = () => {
 
     // فیلدهای جدول
     const datainfo = [
-        { feild: "id", title: "#" },
-        { feild: "original_name", title: "عنوان لاتین" },
-        { feild: "persian_name", title: "عنوان فارسی" },
+        { feild: "title", title: "عنوان" },
         { feild: "descriptions", title: "توضیحات" },
+        { feild: "length", title: " مدت گارانتی" },
+        { feild: "length_unit", title: "واحد" },
     ];
+
 
     // نمایش لوگو
     const AdditionalFeild = [
-        {
-            title: "لوگو",
-            elements: (rowdata) =>
-                rowdata.logo ? (
-                    <img
-                        src={`http://ecomadminapi.azhadev.ir/${rowdata.logo}`}
-                        alt={rowdata.original_name}
-                        className="w-10"
-                    />
-                ) : (
-                    <h1 className="text-red-500">لوگو ندارد</h1>
-                ),
-        },
         {
             title: "عملیات",
             elements: (rowdata) => additionalElements(rowdata),
@@ -62,7 +51,7 @@ const BrandsTable = () => {
     const searchparams = {
         title: 'جستجو',
         placeholder: 'قسمتی از عنوان رو جست و جو کنید',
-        searchfeild: 'original_name'
+        searchfeild: 'title'
     };
 
     // دکمه‌های عملیات (ویرایش و حذف)
@@ -79,39 +68,32 @@ const BrandsTable = () => {
         </div>
     );
 
-
     // اسکیما اعتبارسنجی فرم
     const validationSchema = Yup.object({
-        original_name: Yup.string()
-            .matches(/^[A-Za-z\s]+$/, "عنوان حتما باید انگلیسی باشد") // فقط حروف انگلیسی و فاصله
-            .required("عنوان لاتین ضروری است"),
-        persian_name: Yup.string()
-            .matches(/^[\u0600-\u06FF\s]+$/, "عنوان حتما باید فارسی باشد") // فقط حروف فارسی
-            .required("عنوان فارسی ضروری است"),
-        descriptions: Yup.string(),
-        logo: Yup.mixed()
-            .nullable()
-            .test(
-                "fileformat",
-                "فرمت فایل باید jpg یا png باشد",
-                (value) => !value || ["image/jpg", "image/png"].includes(value?.type)
-            ),
+        title: Yup.string().required("این فیلد ضروری است"),
+        length_unit: Yup.string()
+            .oneOf(["روز", "ماه", "سال"], "واحد طول باید روز، ماه یا سال باشد")
+            .required("این فیلد ضروری است"),
+        length: Yup.number()
+            .typeError("ورودی باید به صورت عدد باشد")
+            .required("این فیلد ضروری است")
+            .positive("عدد باید مثبت باشد")
+            .integer("عدد باید صحیح باشد"),
     });
 
     // مقدار اولیه فرم
     const initialvalues = {
-        original_name: "",
-        persian_name: "",
+        title: "",
+        length: "",
         descriptions: "",
-        logo: null,
+        length_unit: "",
     };
-
 
     // دریافت داده‌ها
     useEffect(() => {
-        setLoader(true);
+        setLoader(false);
         urlAxios
-            .get(`/admin/brands`)
+            .get(`admin/guarantees`)
             .then((res) => {
                 setData(res.data.data);
                 setLoader(false);
@@ -123,10 +105,30 @@ const BrandsTable = () => {
             });
     }, [flag]);
 
+
+    //  باز کردن و بستن مدال‌ها برای ویرایش
+    const handleModalOpen = (id) => {
+        setIsModalOpen(true);
+        urlAxios
+            .get(`/admin/guarantees/${id}`)
+            .then((res) => {
+                setEditGarranty(res.data.data);
+                setLoader(false);
+            })
+            .catch((err) => {
+                console.error(err);
+                setLoader(false);
+            });
+    }
+
+
+
+
+
     // حذف برند
     const handleDeleteConfirm = (id) => {
         urlAxios
-            .delete(`/admin/brands/${id}`)
+            .delete(`admin/guarantees/${id}`)
             .then((res) => {
                 setItemIdToDelete(null);
                 if (res.status === 200) {
@@ -144,18 +146,12 @@ const BrandsTable = () => {
 
     // ارسال فرم
     const onSubmit = (values) => {
-        const formData = new FormData();
-        formData.append("original_name", values.original_name);
-        formData.append("persian_name", values.persian_name);
-        formData.append("descriptions", values.descriptions || "");
-        if (values.logo) formData.append("logo", values.logo);
-
         if (values.id) {
             urlAxios
-                .post(`/admin/brands/${values.id}`, formData)
+                .put(`admin/guarantees/${values.id}`, values)
                 .then((res) => {
-                    toast.success("برند با موفقیت ویرایش  شد");
-                    setData([...data, res.data.data]);
+                    toast.success(res.data.message);
+                    setData(res.data.data);
                     setIsModalOpen(false);
                     setFlag(!flag);
                 })
@@ -165,17 +161,17 @@ const BrandsTable = () => {
                 })
                 .finally(() => {
                     setLoader(false);
-                    setEditBrand("");
                 }
                 );
 
         } else {
             urlAxios
-                .post("/admin/brands", formData)
+                .post("admin/guarantees", values)
                 .then((res) => {
-                    toast.success("برند با موفقیت اضافه شد!");
-                    setData([...data, res.data.data]);
+                    toast.success(res.data.message);
+                    setData(res.data.data);
                     setIsModalOpen(false);
+                    setFlag(!flag);
                 })
                 .catch((err) => {
                     toast.error("مشکلی پیش آمده است!");
@@ -183,31 +179,12 @@ const BrandsTable = () => {
                 })
                 .finally(() => {
                     setLoader(false);
-                    setEditBrand("");
                 }
                 );
         }
 
     };
 
-
-    //  باز کردن و بستن مدال‌ها برای ویرایش
-    const handleModalOpen = (id) => {
-        setIsModalOpen(true);
-        console.log("ID to edit:", id);
-        urlAxios
-            .get(`/admin/brands/${id}`)
-            .then((res) => {
-                setEditBrand(res.data.data);
-                setLoader(false);
-                console.log("Data to edit:", res.data.data);
-
-            })
-            .catch((err) => {
-                console.error(err);
-                setLoader(false);
-            });
-    }
 
 
 
@@ -226,46 +203,63 @@ const BrandsTable = () => {
                 position="top-center"
                 reverseOrder={false}
             />
-            <Modal isOpen={isModalOpen} onClose={handleModalClose} title="افزودن برند">
+            <Modal isOpen={isModalOpen} onClose={handleModalClose} title="افزودن گارانتی">
                 <button onClick={handleModalClose}>
                     <IoIosCloseCircleOutline size={25} className="-mt-10 mx-[610px] mb-6" />
                 </button>
 
                 <Formik
-                    initialValues={editbrand || initialvalues}
+                    initialValues={editgarranty || initialvalues}
                     validationSchema={validationSchema}
                     onSubmit={onSubmit}
                     enableReinitialize={true}
                 >
-                    <Form style={{ direction: "rtl" }} encType="multipart/form-data">
-                       <div className="flex flex-col gap-3">
-                       <FormikControl control="input" name="original_name" label="عنوان لاتین" />
-                        <ErrorMessage name="original_name" component="div" className="text-red-500" />
+                    <Form style={{ direction: "rtl" }}>
+                        {/* عنوان */}
+                        <FormikControl control="input" name="title" label="عنوان" />
+                        <ErrorMessage name="title" component="div" className="text-red-500" />
 
-                        <FormikControl control="input" name="persian_name" label="عنوان فارسی" />
-                        <ErrorMessage name="persian_name" component="div" className="text-red-500" />
+                        {/* مدت گارانتی */}
+                        <FormikControl control="input" name="length" label="مدت گارانتی" />
+                        <ErrorMessage name="length" component="div" className="text-red-500" />
 
-                        <FormikControl control="textarea" name="descriptions" label="توضیحات" />
+                        {/* واحد */}
+                        <FormikControl
+                            control="select"
+                            name="length_unit"
+                            label="واحد"
+                            options={[
+                                { id: "روز", value: "روز" },
+                                { id: "ماه", value: "ماه" },
+                                { id: "سال", value: "سال" },
+                            ]}
+                        />
+                        <ErrorMessage name="length_unit" component="div" className="text-red-500" />
+
+                        {/* توضیحات */}
+                        <FormikControl control="input" name="descriptions" label="توضیحات" />
                         <ErrorMessage name="descriptions" component="div" className="text-red-500" />
 
-                        <FormikControl control="file" name="logo" label="تصویر" />
-                        <ErrorMessage name="logo" component="div" className="text-red-500" />
 
-                       </div>
-                        <div className="flex justify-end gap-5 ">
+                        <div className="flex justify-end gap-5">
                             <button type="submit" className="mt-4 bg-dark text-white py-2 px-4 rounded-lg">
-                                {editbrand ? "ویرایش" : "ثبت"}
+                                {editgarranty ? "ویرایش" : "ثبت"}
                             </button>
-                            <button type="button" onClick={() => { handleModalClose(); setEditBrand("") }} className="mt-4 bg-rose-700 text-white py-2 px-4 rounded-lg">
+                            <button
+                                type="button"
+                                onClick={() => { handleModalClose(); setEditGarranty("") }}
+                                className="mt-4 bg-rose-700 text-white py-2 px-4 rounded-lg"
+                            >
                                 انصراف
                             </button>
                         </div>
                     </Form>
                 </Formik>
+
             </Modal>
             <DeleteModal isOpen={isDeleteModalOpen} onClose={handleDeleteModalClose} onConfirm={() => handleDeleteConfirm(itemIdToDelete)} />
         </div>
     );
 };
 
-export default BrandsTable;
+export default GarantyTable;

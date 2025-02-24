@@ -1,28 +1,28 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Login from './pages/auth/LogIn'
-import Album from './pages/album/Album'
+import Brands from './pages/brands/Brands'
 import Dashbord from './pages/dashboard/Dashbord'
-import Products from './pages/category/Products'
-import Colors from './pages/colors/Colors'
-import Categories from './pages/category/Categories'
 import Addcategories from './pages/category/Addcategories'
+import Garainty from './pages/garanty/Garainty'
+import CategoriesTable from './pages/category/CategoriesTable'
+import ColorsTable from './pages/colors/ColorsTable'
 function Content() {
   return (
     <Routes>
       <Route path='/login' element={<Login />} />
       <Route path='*' element={<Dashbord />} />
-      <Route path='/admin/album' element={<Album />} />
-      
-      <Route path='/admin/categories' element={<Categories />}>
+
+      <Route path='/admin/brands' element={<Brands />} />
+      <Route path='/admin/brands/addbrands'/>
+      <Route path='/admin/categories' element={<CategoriesTable/>}>
         <Route path=':categoriesId' />
       </Route>
       <Route path={'/admin/addcategories'} element={<Addcategories />} >
       <Route path=':productId' />
       </Route>
-
-      <Route path='/admin/addproduct' element={<Products />} />
-      <Route path='/admin/colors' element={<Colors />} />
+      <Route path='/admin/garanty' element={<Garainty />} />
+      <Route path='/admin/colors' element={<ColorsTable/>} />
       
     </Routes>
   )

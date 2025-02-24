@@ -1,11 +1,11 @@
 import React from 'react'
-import Table from '../../component/Table/Table'
+import Colors from './Colors'
 
 function ColorsTable() {
   return (
     <div>
-        <button className='bg-green-950'>add colors</button>
-        <Table />
+        <div className='text-center mt-5 text-2xl text-sky-700 '>add colors</div>
+        <Colors/>
     </div>
   )
 }

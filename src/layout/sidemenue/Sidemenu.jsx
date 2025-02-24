@@ -6,6 +6,7 @@ import { MdOutlineInvertColors, MdOutlineProductionQuantityLimits } from 'react-
 import { LuLayoutDashboard } from 'react-icons/lu';
 import { ImExit } from 'react-icons/im';
 import Modal from '../../component/Modal/Modal';
+import { TbBrandSketch, TbBrandSketchFilled, TbLicense } from 'react-icons/tb';
 
 function Sidemenu() {
   const [menubutton, setMenuButton] = useState(false);
@@ -58,18 +59,7 @@ function Sidemenu() {
             <LuLayoutDashboard />
           </span>
         </NavLink>
-        <NavLink
-          onClick={changemenubbutton}
-          to="/admin/album"
-          className={({ isActive }) =>
-            `block py-3 px-4 rounded-lg transition duration-300 ${isActive
-              ? 'bg-menuHover border-l-2 border-rose-500 font-bold'
-              : 'hover:bg-menuHover'
-            }`
-          }
-        >
-          آلبوم
-        </NavLink>
+
 
         <NavLink
           onClick={changemenubbutton}
@@ -86,6 +76,39 @@ function Sidemenu() {
             <MdOutlineProductionQuantityLimits size={20} />
           </span>
         </NavLink>
+        <NavLink
+          onClick={changemenubbutton}
+          to="/admin/brands"
+          className={({ isActive }) =>
+            `block py-3 px-4 rounded-lg transition duration-300 ${isActive
+              ? 'bg-menuHover border-l-2 border-rose-500 font-bold'
+              : 'hover:bg-menuHover'
+            }`
+          }
+        >
+          <span className='flex items-center justify-end gap-2'>
+            مدیریت برندها
+            <TbBrandSketchFilled  size={20}/>
+          </span>
+        </NavLink>
+
+
+        <NavLink
+          onClick={changemenubbutton}
+          to="/admin/garanty"
+          className={({ isActive }) =>
+            `block py-3 px-4 rounded-lg transition duration-300 ${isActive
+              ? 'bg-menuHover border-l-2 border-rose-500 font-bold'
+              : 'hover:bg-menuHover'
+            }`
+          }
+        >
+          <span className='flex items-center justify-end gap-2'>
+            گارانتی ها
+            <TbLicense />
+          </span>
+        </NavLink>
+
 
         <NavLink
           onClick={changemenubbutton}

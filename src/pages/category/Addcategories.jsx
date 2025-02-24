@@ -15,17 +15,6 @@ const AddCategories = () => {
     //شناسه محصول
     const { productId } = useParams();
     
-    //نمایش در منو
-    const showInMenuOptions = [
-        { id: "پنهان کردن", value: false },
-        { id: "نمایش دادن", value: true },
-    ];
-    //وضعیت فعال بودن
-    const isActiveOptions = [
-        { id: "غیر فعال", value: false },
-        { id: "فعال", value: true },
-    ];
-    //اطلاعات اولیه
     const [parentCategories, setParentCategories] = useState([]);
     const [initialValues, setInitialValues] = useState({
         title: "",

@@ -9,15 +9,17 @@ import { urlAxios } from '../../Services/URL';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import moment from 'jalali-moment';
 import toast, { Toaster } from 'react-hot-toast';
+import { CgAttribution } from 'react-icons/cg';
+import { CiReceipt } from 'react-icons/ci';
 
-const Category = () => {
+const Categories = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [itemIdToDelete, setItemIdToDelete] = useState(null);
 
-
+  const [loader, setloader] = useState(false)
   // انتخاب زیر دسته ها   
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);  //ذخیره زیر دسته‌ها
   const [subCategories, setSubCategories] = useState([]); // ذخیره زیر دسته‌ها
@@ -53,13 +55,16 @@ const Category = () => {
   // دریافت اطلاعات
   const [data, setData] = useState([]);
   useEffect(() => {
+    setloader(true)
     urlAxios.get(`/admin/categories${selectedCategoryId ? `?parent=${selectedCategoryId}` : ""}`)
       .then(res => {
         if (res.status === 200) {
           if (selectedCategoryId) {
             setSubCategories(res.data.data);
+            setloader(false)
             // ذخیره داده‌های زیر دسته‌ها
           } else {
+            setloader(false)
             setData(res.data.data);  // ذخیره داده‌های اصلی
           }
         }
@@ -97,10 +102,7 @@ const Category = () => {
 
   // فیلدهای اضافی برای زیر دسته‌ها
   const SubCategoryAdditionalFeild = [
-    {
-      title: 'زیر دسته عنوان',
-      elements: (rowdata) => rowdata.sub_category_title || "-",
-    },
+
     {
       title: 'تاریخ ایجاد',
       elements: (rowdata) => moment(rowdata.create_at).format('jYYYY/jMM/jDD'),
@@ -111,21 +113,31 @@ const Category = () => {
     },
   ];
 
+
+
   // فیلدهای اضافی برای عملیات
   const additionalElements = ({ id }) => {
     return (
       <div className="text-xl text-center flex justify-center gap-1 title-font font-medium items-center">
-        <Toaster position="top-center" reverseOrder={false} />
-        <button onClick={() => setSelectedCategoryId(id)} title="زیر دسته‌ها">
-          <VscTypeHierarchySub className="text-yellow-500" />
-        </button>
+
+        {
+          selectedCategoryId ?
+
+            null
+            :
+            <button onClick={() => setSelectedCategoryId(id)} title="زیر دسته‌ها">
+              <VscTypeHierarchySub className={`text-yellow-500 hover:text-amber-800 `} />
+            </button>
+        }
+
+
         <Link to={`/admin/addcategories/${id}`}>
           <button title="ویرایش">
-            <MdOutlineModeEdit className="text-sky-500" />
+            <MdOutlineModeEdit className="text-sky-500 hover:text-sky-800" />
           </button>
         </Link>
         <button title="حذف" onClick={() => handleDeleteModalOpen(id)}>
-          <RiDeleteBinLine className="text-rose-700" />
+          <RiDeleteBinLine className="text-rose-500 hover:text-rose-800" />
         </button>
       </div>
     );
@@ -134,6 +146,7 @@ const Category = () => {
   // نمایش در منو
   const showinmenu = (rowdata) => {
     return (
+
       <span className='text-center'>
         {
           rowdata.show_in_menu ?
@@ -162,6 +175,8 @@ const Category = () => {
         AdditionalFeild={selectedCategoryId ? SubCategoryAdditionalFeild : AdditionalFeild}
         searchparams={searchparams}
         onAddButtonClick={handleModalOpen}
+        loader={loader}
+        url={'/admin/addcategories'}
       />
       <Modal
         AdditionalFeild
@@ -196,4 +211,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default Categories;
