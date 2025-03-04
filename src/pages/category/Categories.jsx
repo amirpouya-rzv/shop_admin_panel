@@ -46,7 +46,6 @@ const Categories = () => {
         setFlag(!flag)
       })
       .catch(err => {
-        console.log(err);
         toast.error(`${err.data.message}`);
       });
     setIsDeleteModalOpen(false);
@@ -69,9 +68,7 @@ const Categories = () => {
           }
         }
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => {});
   }, [params, selectedCategoryId, flag]);
 
   // داده‌های اصلی
@@ -131,7 +128,7 @@ const Categories = () => {
         }
 
 
-        <Link to={`/admin/addcategories/${id}`}>
+        <Link to={`/admin/categories/addcategories/${id}`}>
           <button title="ویرایش">
             <MdOutlineModeEdit className="text-sky-500 hover:text-sky-800" />
           </button>
@@ -176,7 +173,7 @@ const Categories = () => {
         searchparams={searchparams}
         onAddButtonClick={handleModalOpen}
         loader={loader}
-        url={'/admin/addcategories'}
+        url={'/admin/categories/addcategories'}
       />
       <Modal
         AdditionalFeild

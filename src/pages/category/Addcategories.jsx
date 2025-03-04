@@ -14,7 +14,7 @@ const AddCategories = () => {
 
     //شناسه محصول
     const { productId } = useParams();
-    
+
     const [parentCategories, setParentCategories] = useState([]);
     const [initialValues, setInitialValues] = useState({
         title: "",
@@ -33,7 +33,7 @@ const AddCategories = () => {
             } else {
                 toast.error("مشکل در دریافت اطلاعات دسته‌بندی‌ها");
             }
-        }).catch(err => console.log(err));
+        }).catch();
     }, []);
 
     //ادیت کردن دسته
@@ -41,7 +41,6 @@ const AddCategories = () => {
         if (productId) {
             urlAxios.get(`/admin/categories/${productId}`)
                 .then(res => {
-                    console.log(res);
                     if (res.status === 200) {
                         setInitialValues({
                             title: res.data.data.title,
@@ -53,7 +52,7 @@ const AddCategories = () => {
                         });
                     }
                 })
-                .catch(err => console.log(err));
+                .catch();
         }
     }, [productId]);
     //ویلیدیشن
@@ -75,15 +74,14 @@ const AddCategories = () => {
         formData.append("parent_id", values.parent_id || "");
         formData.append("show_in_menu", values.show_in_menu ? 1 : 0);
         formData.append("is_active", values.is_active ? 1 : 0);
-        if (values.image) formData.append("image", values.image);
-
+        
         const request = productId
             ? urlAxios.put(`/admin/categories/${productId}`, formData)
             : urlAxios.post(`/admin/categories`, formData);
 
         request.then(res => {
             if (res.status === 200 || res.status === 201) {
-                toast.success(res.data.message);
+                toast.success(res.data.data);
                 resetForm();
                 navigate("/admin/categories");
             }
@@ -101,9 +99,7 @@ const AddCategories = () => {
 
                 {parentCategories.length > 0 && <FormikControl control="select" label="دسته والد:" name="parent_id" options={parentCategories} />}
                 <FormikControl control="input" type="text" label="عنوان دسته:" name="title" />
-                <ErrorMessage name="title" component="div" className="text-red-500 text-sm" />
                 <FormikControl control="textarea" label="توضیحات:" name="description" placeholder="توضیحات" />
-                <FormikControl control="file" label="تصویر" name="image" />
                 <FormikControl control="switch" name="show_in_menu" label="نمایش در منو" />
                 <FormikControl control="switch" name="is_active" label="وضعیت فعال" />
 

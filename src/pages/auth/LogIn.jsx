@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { LoaderIcon } from 'react-hot-toast';
+import toast, { LoaderIcon, Toaster } from 'react-hot-toast';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { urlAxios } from '../../Services/URL';
 
 function Login() {
@@ -10,6 +10,7 @@ function Login() {
   const [errors, setErrors] = useState({});
   const [visiblePassword, setVisiblePassword] = useState(false);
   const [submit, setSubmit] = useState(false);
+  const location = useLocation();
   const [data, setData] = useState({
     phone: '',
     password: '',
@@ -73,34 +74,40 @@ function Login() {
       remember: data.remember ? '1' : '0',
     })
       .then((res) => {
-        console.log(res.data);
-        console.log(data);
-
         if (res.status === 200) {
           localStorage.setItem('loginToken', JSON.stringify(res.data));
           navigate('/'); // Navigate if needed
+          toast.success(res.data.message)
         }
       })
       .catch((err) => {
-        console.log(err.response.data);
-
-        // Set global error if needed
         setErrors((prevErrors) => ({
           ...prevErrors,
           global: 'Login failed. Please check your credentials.',
         }));
       })
       .finally(() => {
-        setSubmit(false); // Reset submitting state
+        setSubmit(false);
       });
   };
 
   return (
     <>
-      <div className="relative h-screen bg-contain bg-center" style={{ backgroundImage: "url('/image/cole-keister-xMMh-VFGL9M-unsplash.jpg')" }}>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
+      <div className="relative h-screen bg-contain bg-center">
         <div className="flex justify-center items-center h-full font-serif">
           <div className="md:w-2/6 w-5/6 items-center p-10 border border-gray-300 rounded-2xl shadow-2xl bg-white bg-opacity-50">
             <form onSubmit={sendData} className="flex flex-col gap-5">
+              {
+                location.pathname === '/auth/login'
+                  ?
+                  (<h1 className='text-right font-vazirmatn text-3xl text-gray-500 '> صفحه ورود</h1>)
+                  :
+                  (<h1>register</h1>)
+              }
               <div className="flex flex-col gap-3 mb-5">
                 <label htmlFor="phone" className="font-vazirmatn cursor-pointer text-gray-600">
                   شماره همراه:<span className="text-red-500">*</span>

@@ -7,6 +7,8 @@ import Checkbox from './Checkbox';
 import File from './File';
 import Switch from './Switch';
 import Datae from './Datae';
+import MultiSelect from './MultiSelect'; // اصلاح نام کامپوننت
+import SearchableSelect from './SearchableSelect';
 
 function FormikControl(props) {
     switch (props.control) {
@@ -16,19 +18,23 @@ function FormikControl(props) {
             return <Textarea {...props} />;
         case "select":
             return <Select {...props} />;
-        case "radio":  
+        case "radio":
             return <Radio {...props} />;
-            case "checkbox":  
+        case "checkbox":
             return <Checkbox {...props} />;
-            case "file":  
+        case "file":
             return <File {...props} />;
-            case "switch":  
+        case "switch":
             return <Switch {...props} />;
-            case "datae":  
+        case "datae":
             return <Datae {...props} />;
+        case "multiSelect":
+            return <MultiSelect {...props} />; 
+        case "searchableSelect":
+            return <SearchableSelect/>
         default:
-            return null; 
-            }
+            return null;
+    }
 }
 
 export default FormikControl;

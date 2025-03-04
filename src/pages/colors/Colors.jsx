@@ -114,7 +114,7 @@ const Colors = () => {
             .delete(`admin/colors/${id}`)
             .then((res) => {
                 if (res.status === 200) {
-                    toast.success("رنگ با موفقیت حذف شد");
+                    toast.success(res.data.message);
                     setData(data.filter((item) => item.id !== id));
                 }
             })
@@ -128,7 +128,7 @@ const Colors = () => {
             urlAxios
                 .put(`admin/colors/${values.id}`, values)
                 .then((res) => {
-                    toast.success("رنگ با موفقیت ویرایش شد");
+                    toast.success(res.data.message);
                     setIsModalOpen(false);
                     setEditColor(null);
                     setData(data.map((item) => (item.id === values.id ? res.data.data : item)));
@@ -139,7 +139,7 @@ const Colors = () => {
             urlAxios
                 .post("admin/colors", values)
                 .then((res) => {
-                    toast.success("رنگ با موفقیت اضافه شد!");
+                    toast.success(res.data.message);
                     setData([...data, res.data.data]);
                     setIsModalOpen(false);
                 })

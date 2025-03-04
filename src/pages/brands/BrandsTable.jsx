@@ -39,19 +39,19 @@ const BrandsTable = () => {
 
     // نمایش لوگو
     const AdditionalFeild = [
-        {
-            title: "لوگو",
-            elements: (rowdata) =>
-                rowdata.logo ? (
-                    <img
-                        src={`http://ecomadminapi.azhadev.ir/${rowdata.logo}`}
-                        alt={rowdata.original_name}
-                        className="w-10"
-                    />
-                ) : (
-                    <h1 className="text-red-500">لوگو ندارد</h1>
-                ),
-        },
+        // {
+        //     title: "لوگو",
+        //     elements: (rowdata) =>
+        //         rowdata.logo ? (
+        //             <img
+        //                 src={`http://ecomadminapi.azhadev.ir/${rowdata.logo}`}
+        //                 alt={rowdata.original_name}
+        //                 className="w-10"
+        //             />
+        //         ) : (
+        //             <h1 className="text-red-500">لوگو ندارد</h1>
+        //         ),
+        // },
         {
             title: "عملیات",
             elements: (rowdata) => additionalElements(rowdata),
@@ -148,7 +148,7 @@ const BrandsTable = () => {
         formData.append("original_name", values.original_name);
         formData.append("persian_name", values.persian_name);
         formData.append("descriptions", values.descriptions || "");
-        if (values.logo) formData.append("logo", values.logo);
+        // if (values.logo) formData.append("logo", values.logo);
 
         if (values.id) {
             urlAxios
@@ -194,13 +194,11 @@ const BrandsTable = () => {
     //  باز کردن و بستن مدال‌ها برای ویرایش
     const handleModalOpen = (id) => {
         setIsModalOpen(true);
-        console.log("ID to edit:", id);
         urlAxios
             .get(`/admin/brands/${id}`)
             .then((res) => {
                 setEditBrand(res.data.data);
                 setLoader(false);
-                console.log("Data to edit:", res.data.data);
 
             })
             .catch((err) => {
@@ -240,16 +238,13 @@ const BrandsTable = () => {
                     <Form style={{ direction: "rtl" }} encType="multipart/form-data">
                        <div className="flex flex-col gap-3">
                        <FormikControl control="input" name="original_name" label="عنوان لاتین" />
-                        <ErrorMessage name="original_name" component="div" className="text-red-500" />
 
                         <FormikControl control="input" name="persian_name" label="عنوان فارسی" />
-                        <ErrorMessage name="persian_name" component="div" className="text-red-500" />
 
                         <FormikControl control="textarea" name="descriptions" label="توضیحات" />
-                        <ErrorMessage name="descriptions" component="div" className="text-red-500" />
 
-                        <FormikControl control="file" name="logo" label="تصویر" />
-                        <ErrorMessage name="logo" component="div" className="text-red-500" />
+                        {/* <FormikControl control="file" name="logo" label="تصویر" />
+                        <ErrorMessage name="logo" component="div" className="text-red-500" /> */}
 
                        </div>
                         <div className="flex justify-end gap-5 ">

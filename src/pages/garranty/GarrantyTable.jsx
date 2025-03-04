@@ -11,10 +11,9 @@ import { ErrorMessage, Form, Formik } from "formik";
 import FormikControl from "../../component/form/FormikControl";
 import * as Yup from "yup";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-import Loader from "../../component/loader/Loader";
 
-const GarantyTable = () => {
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+const GarrantyTable = () => {
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); 
     const [itemIdToDelete, setItemIdToDelete] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loader, setLoader] = useState(false);
@@ -217,11 +216,9 @@ const GarantyTable = () => {
                     <Form style={{ direction: "rtl" }}>
                         {/* عنوان */}
                         <FormikControl control="input" name="title" label="عنوان" />
-                        <ErrorMessage name="title" component="div" className="text-red-500" />
 
                         {/* مدت گارانتی */}
                         <FormikControl control="input" name="length" label="مدت گارانتی" />
-                        <ErrorMessage name="length" component="div" className="text-red-500" />
 
                         {/* واحد */}
                         <FormikControl
@@ -262,4 +259,4 @@ const GarantyTable = () => {
     );
 };
 
-export default GarantyTable;
+export default GarrantyTable;
