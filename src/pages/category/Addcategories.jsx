@@ -84,7 +84,7 @@ const AddCategories = () => {
 
         request.then(res => {
             if (res.status === 200 || res.status === 201) {
-                toast.success(res.data.message);
+                toast.success(res.data.data);
                 resetForm();
                 navigate("/admin/categories");
             }
