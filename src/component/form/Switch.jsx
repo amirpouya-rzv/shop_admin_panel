@@ -3,7 +3,7 @@ import { FastField } from "formik";
 
 function Switch({ name, label }) {
     return (
-        <div className="flex items-center space-x-4 my-4 gap-5" >
+        <div className="flex items-center space-x-4 my-4 gap-5">
             <label htmlFor={name} className="text-gray-700">
                 {label}
             </label>

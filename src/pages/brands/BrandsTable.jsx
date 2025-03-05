@@ -5,9 +5,9 @@ import Table from "../../component/Table/Table";
 import Modal from "../../component/Modal/Modal";
 import DeleteModal from "../../component/DeleteModal/DeleteModal";
 import { urlAxios } from "../../Services/URL";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import { ErrorMessage, Form, Formik } from "formik";
+import {  Form, Formik } from "formik";
 import FormikControl from "../../component/form/FormikControl";
 import * as Yup from "yup";
 import { IoIosCloseCircleOutline } from "react-icons/io";
@@ -18,9 +18,11 @@ const BrandsTable = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loader, setLoader] = useState(false);
     const [data, setData] = useState([]);
-    const [flag, setFlag] = useState(false)
     const [editbrand, setEditBrand] = useState(null);
-
+    
+    
+    //فرایند حذف
+    const [flag, setFlag] = useState(false)
     const handleModalClose = () => setIsModalOpen(false);
     const handleDeleteModalOpen = (id) => {
         setItemIdToDelete(id);
@@ -37,8 +39,8 @@ const BrandsTable = () => {
         { feild: "descriptions", title: "توضیحات" },
     ];
 
-    // نمایش لوگو
     const AdditionalFeild = [
+            // نمایش لوگو
         // {
         //     title: "لوگو",
         //     elements: (rowdata) =>
@@ -58,14 +60,14 @@ const BrandsTable = () => {
         },
     ];
 
-
+    //جستو جو
     const searchparams = {
         title: 'جستجو',
         placeholder: 'قسمتی از عنوان رو جست و جو کنید',
         searchfeild: 'original_name'
     };
 
-    // دکمه‌های عملیات (ویرایش و حذف)
+    //   (ویرایش و حذف) دکمه ها
     const additionalElements = ({ id }) => (
         <div className="text-xl text-center flex justify-center gap-1 title-font font-medium items-center">
             <Link onClick={() => { handleModalOpen(id) }}>
@@ -191,7 +193,7 @@ const BrandsTable = () => {
     };
 
 
-    //  باز کردن و بستن مدال‌ها برای ویرایش
+    //  باز و بستن مدال‌ برای ویرایش
     const handleModalOpen = (id) => {
         setIsModalOpen(true);
         urlAxios
@@ -224,6 +226,8 @@ const BrandsTable = () => {
                 position="top-center"
                 reverseOrder={false}
             />
+
+            {/* مدال */}
             <Modal isOpen={isModalOpen} onClose={handleModalClose} title="افزودن برند">
                 <button onClick={handleModalClose}>
                     <IoIosCloseCircleOutline size={25} className="-mt-10 mx-[610px] mb-6" />
@@ -236,17 +240,34 @@ const BrandsTable = () => {
                     enableReinitialize={true}
                 >
                     <Form style={{ direction: "rtl" }} encType="multipart/form-data">
-                       <div className="flex flex-col gap-3">
-                       <FormikControl control="input" name="original_name" label="عنوان لاتین" />
+                        <div className="flex flex-col gap-3">
 
-                        <FormikControl control="input" name="persian_name" label="عنوان فارسی" />
+                            <FormikControl
+                                control="input"
+                                name="original_name"
+                                label="عنوان لاتین"
+                            />
 
-                        <FormikControl control="textarea" name="descriptions" label="توضیحات" />
+                            <FormikControl
+                                control="input"
+                                name="persian_name"
+                                label="عنوان فارسی"
+                            />
 
-                        {/* <FormikControl control="file" name="logo" label="تصویر" />
+                            <FormikControl
+                                control="textarea"
+                                name="descriptions"
+                                label="توضیحات"
+                            />
+
+                            {/* <FormikControl
+                             control="file"
+                              name="logo"
+                               label="تصویر"
+                                />
                         <ErrorMessage name="logo" component="div" className="text-red-500" /> */}
 
-                       </div>
+                        </div>
                         <div className="flex justify-end gap-5 ">
                             <button type="submit" className="mt-4 bg-dark text-white py-2 px-4 rounded-lg">
                                 {editbrand ? "ویرایش" : "ثبت"}

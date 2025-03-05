@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { MdOutlineModeEdit } from "react-icons/md";
 import Table from "../../component/Table/Table";
 
 import { urlAxios } from "../../Services/URL";
-import { Link, useNavigate, useParams } from "react-router-dom";
 
 
 const SeeallRoles = () => {
@@ -25,7 +22,7 @@ const SeeallRoles = () => {
        
     ];
 
-
+//فیلد های جستو جو
     const searchparams = {
         title: 'جستجو',
         placeholder: 'قسمتی از عنوان رو جست و جو کنید',

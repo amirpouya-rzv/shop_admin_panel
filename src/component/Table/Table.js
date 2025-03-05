@@ -17,9 +17,7 @@ function Table({ data, datainfo, AdditionalFeild, url, searchparams, onAddButton
     // محاسبه کل صفحات
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-
-
-
+    
     // فیلتر داده‌ها براساس جستجو
     useEffect(() => {
         if (searchChat.trim() === "") {
@@ -38,19 +36,19 @@ function Table({ data, datainfo, AdditionalFeild, url, searchparams, onAddButton
     // برش داده‌های جدول برای نمایش صفحه جاری
     const currentData = Array.isArray(filteredData) ? filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage) : [];
 
-    // Simulate loading state
+    //نمایش اسکلتون
     useEffect(() => {
         setLADING(true);
         setTimeout(() => {
             setFilteredData(data);
             setLADING(false);
-        }, 2000);
+        }, 1000);
     }, [data]);
 
     return (
         <div className='mt-5 text-center' style={{ direction: 'rtl' }}>
             <div className="flex justify-between mx-14 mb-8 items-center">
-                {/* Search box */}
+                {/* سرچ   */}
                 <div className="relative w-full max-w-md">
                     <input
                         onChange={(e) => setSearChChat(e.target.value)}
@@ -63,7 +61,7 @@ function Table({ data, datainfo, AdditionalFeild, url, searchparams, onAddButton
                     </div>
                 </div>
 
-                {/* Add Item Button */}
+                {/* دکمه اضافه کردن */}
                 <div onClick={() => {
                     if (url) {
                         navigate(url.startsWith("/") ? url : `/${url}`, { replace: false });
@@ -77,7 +75,7 @@ function Table({ data, datainfo, AdditionalFeild, url, searchparams, onAddButton
                 </div>
             </div>
 
-            {/* Table */}
+            {/* جدول */}
             {loading ? (
                 <table className="w-11/12 mx-auto rounded-lg overflow-hidden text-sm border-collapse border border-gray-100 text-dark shadow-lg bg-white">
                     <thead className='bg-gradient-to-r from-blue-100 to-blue-300'>
@@ -147,7 +145,7 @@ function Table({ data, datainfo, AdditionalFeild, url, searchparams, onAddButton
                 )
             )}
 
-            {/* Pagination */}
+            {/* پیجینیشن */}
             {totalPages > 1 && (
                 <div className="flex justify-center mt-6 space-x-2">
                     <button

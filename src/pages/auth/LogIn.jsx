@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import toast, { LoaderIcon, Toaster } from 'react-hot-toast';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
@@ -24,20 +23,20 @@ function Login() {
   const validateInputs = () => {
     const newErrors = {};
 
-    // Validate phone number
+    // بررسی صحت شماره تلفن
     if (!data.phone) {
       newErrors.phone = 'Please enter your phone number';
     } else if (!/^09\d{9}$/.test(data.phone)) {
       newErrors.phone = 'Please enter a valid phone number';
     }
 
-    // Validate password
+    // بررسی صحت رمز عبور
     if (!data.password) {
       newErrors.password = 'Please enter your password';
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Return true if no errors
+    return Object.keys(newErrors).length === 0; 
   };
 
   const handleInputChange = (e) => {
@@ -47,7 +46,6 @@ function Login() {
       [id]: type === 'checkbox' ? checked : value,
     });
 
-    // Remove errors dynamically when conditions are met
     if (id === 'password' && value.length >= 8) {
       setErrors((prevErrors) => {
         const { password, ...rest } = prevErrors;
@@ -65,9 +63,8 @@ function Login() {
   const sendData = (e) => {
     e.preventDefault();
 
-    if (!validateInputs()) return; // Stop submission if validation fails
-
-    setSubmit(true); // Set submitting state
+    if (!validateInputs()) return; 
+    setSubmit(true);
 
     urlAxios.post('/auth/login', {
       ...data,
@@ -76,7 +73,7 @@ function Login() {
       .then((res) => {
         if (res.status === 200) {
           localStorage.setItem('loginToken', JSON.stringify(res.data));
-          navigate('/'); // Navigate if needed
+          navigate('/'); 
           toast.success(res.data.message)
         }
       })

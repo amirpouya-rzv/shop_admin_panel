@@ -5,7 +5,7 @@ import Table from "../../component/Table/Table";
 import Modal from "../../component/Modal/Modal";
 import DeleteModal from "../../component/DeleteModal/DeleteModal";
 import { urlAxios } from "../../Services/URL";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { ErrorMessage, Form, Formik } from "formik";
 import FormikControl from "../../component/form/FormikControl";
@@ -46,7 +46,7 @@ const GarrantyTable = () => {
         },
     ];
 
-
+    //جستوجو
     const searchparams = {
         title: 'جستجو',
         placeholder: 'قسمتی از عنوان رو جست و جو کنید',
@@ -121,9 +121,6 @@ const GarrantyTable = () => {
     }
 
 
-
-
-
     // حذف برند
     const handleDeleteConfirm = (id) => {
         urlAxios
@@ -131,13 +128,13 @@ const GarrantyTable = () => {
             .then((res) => {
                 setItemIdToDelete(null);
                 if (res.status === 200) {
-                    toast.success(`برند با موفقیت حذف شد`);
+                    toast.success(res.data.message);
                     setFlag(!flag);
                 } else {
                 }
             })
             .catch((err) => {
-                toast.error(`اشکال در فرایند حذف`)
+                toast.error(err.data.message)
             });
         setIsDeleteModalOpen(false);
     };

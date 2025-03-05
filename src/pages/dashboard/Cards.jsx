@@ -19,9 +19,9 @@ const Cards = () => {
                     currentValue: data[key].today,
                     lastWeekValue: data[key].thisWeek,
                     lastMonthValue: data[key].thisMonth,
-                    title: `عنوان برای ${key}`, // این می‌تواند به‌طور داینامیک تغییر کند
-                    desc: `توضیحات برای ${key}`,  // این هم به‌طور داینامیک تغییر کند
-                    icon: getIconForCard(key)  // انتخاب آیکون به‌طور داینامیک
+                    title: `عنوان برای ${key}`, 
+                    desc: `توضیحات برای ${key}`, 
+                    icon: getIconForCard(key)
                 }));
                 setCardInfos(newCardObj);
             }
@@ -44,7 +44,7 @@ const Cards = () => {
             case 'successOrdersAmount':
                 return "fas fa-money-check-alt";
             default:
-                return "fas fa-question-circle"; // آیکون پیش‌فرض
+                return "fas fa-question-circle"; 
         }
     };
 

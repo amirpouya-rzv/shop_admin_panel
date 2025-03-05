@@ -5,14 +5,13 @@ import FormikControl from "../../component/form/FormikControl";
 import { urlAxios } from "../../Services/URL";
 import { Toaster, toast } from "react-hot-toast";
 import { IoIosArrowBack } from "react-icons/io";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const AddRole = () => {
     // مسیر‌یابی
     const navigate = useNavigate();
     const location = useLocation();
-    const roleToEdit = location.state?.roleToEdit; // اطلاعات نقش برای ویرایش
-    const { rolesId } = useParams();
+    const roleToEdit = location.state?.roleToEdit;
 
     // استیت برای دسترسی‌ها
     const [permissions, setPermissions] = useState([]);
@@ -43,7 +42,7 @@ const AddRole = () => {
     const validationSchema = Yup.object({
         title: Yup.string().required("عنوان الزامی است"),
         description: Yup.string(),
-        permissions_id: Yup.array().of(Yup.string()),  // مقدار `permissions_id` باید آرایه باشد
+        permissions_id: Yup.array().of(Yup.string()), 
     });
 
     // ارسال اطلاعات به سرور
@@ -56,7 +55,7 @@ const AddRole = () => {
 
             if (res.status === 200 || res.status === 201) {
                 toast.success(roleToEdit ? "نقش با موفقیت ویرایش شد" : "نقش با موفقیت اضافه شد");
-                navigate("/admin/roles");  // بازگشت به لیست نقش‌ها
+                navigate("/admin/roles");  
             } else {
                 toast.error("مشکلی در ثبت نقش پیش آمد!");
             }

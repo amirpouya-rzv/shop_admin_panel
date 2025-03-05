@@ -4,9 +4,8 @@ import { RiDeleteBinLine } from 'react-icons/ri';
 import DeleteModal from '../../component/DeleteModal/DeleteModal';
 import PaginatedTable from '../../component/Table/PaginatedTable';
 import toast, { Toaster } from 'react-hot-toast';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { urlAxios } from '../../Services/URL';
-import { GrUserManager } from "react-icons/gr";
 
 function RolesTable() {
     const [data, setData] = useState([]);
@@ -16,6 +15,7 @@ function RolesTable() {
     const [countOnPage, setCountOnPage] = useState(5);
     const [searchChar, setSearchChar] = useState('');
     const [flag, setFlag] = useState("")
+
     // حذف محصول
     const [openModal, setOpenModal] = useState(false);
     const [itemfordelete, setItemFoDelete] = useState(null);
@@ -70,6 +70,7 @@ function RolesTable() {
         }
     ];
 
+    //تابع جستوجو
     const handelSearch = (char) => {
         setSearchChar(char);
     };

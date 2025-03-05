@@ -9,8 +9,6 @@ import { FaAngleDoubleLeft } from "react-icons/fa";
 
 function AddProducts() {
   const [parentCategories, setParentCategories] = useState([]);
-  const [childCategories, setChildCategories] = useState([]);
-  const [selectedParent, setSelectedParent] = useState(null);
   const [brands, setBrands] = useState([]);
   const [colors, setColors] = useState([]);
   const [guarantees, setGuarantees] = useState([]);
@@ -36,7 +34,7 @@ function AddProducts() {
     discount: null,
   }
 
-
+ //اعتبار سنجی
   const validationSchema = yup.object({
     category_ids: yup.string()
       .required("لطفا این قسمت را پر کنید")
@@ -60,7 +58,6 @@ function AddProducts() {
       .test("format", "فرمت فایل باید jpg باشد", (value) =>
         !value ? true : value.type === "image/jpeg" || value.type === "image/png"
       ),
-    // alt_image: yup.string().matches(/^[\u0600-\u06FF\sa-zA-Z0-9@!%-.$?&]+$/, "فقط از حروف و اعداد استفاده شود"),
     keywords: yup.string().matches(/^[\u0600-\u06FF\sa-zA-Z0-9@!%-.$?&]+$/, "فقط از حروف و اعداد استفاده شود"),
     stock: yup.number(),
     discount: yup.number(),
@@ -68,7 +65,7 @@ function AddProducts() {
 
 
 
-
+// محصولاتدریافت اطلاعات
   useEffect(() => {
     urlAxios
       .get(`/admin/categories`)

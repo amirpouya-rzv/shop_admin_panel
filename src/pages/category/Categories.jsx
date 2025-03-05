@@ -8,9 +8,8 @@ import { VscTypeHierarchySub } from 'react-icons/vsc';
 import { urlAxios } from '../../Services/URL';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import moment from 'jalali-moment';
-import toast, { Toaster } from 'react-hot-toast';
-import { CgAttribution } from 'react-icons/cg';
-import { CiReceipt } from 'react-icons/ci';
+import toast from 'react-hot-toast';
+
 
 const Categories = () => {
   const params = useParams();
@@ -31,8 +30,8 @@ const Categories = () => {
   // مدال حذف
   const [flag, setFlag] = useState(false)
   const handleDeleteModalOpen = (id) => {
-    setItemIdToDelete(id);  // Set the item ID to delete
-    setIsDeleteModalOpen(true);  // Open the delete modal
+    setItemIdToDelete(id);  
+    setIsDeleteModalOpen(true);  
   };
   const handleDeleteModalClose = () => setIsDeleteModalOpen(false);
 
@@ -41,12 +40,13 @@ const Categories = () => {
     urlAxios.delete(`/admin/categories/${id}`)
       .then(res => {
         if (res.status === 201) {
-          toast.success(`${res.data.message}`);
+          toast.success(res.data.message);
         }
         setFlag(!flag)
       })
       .catch(err => {
-        toast.error(`${err.data.message}`);
+        console.log(err);
+        toast.error(err.data.message);
       });
     setIsDeleteModalOpen(false);
   };
@@ -61,14 +61,15 @@ const Categories = () => {
           if (selectedCategoryId) {
             setSubCategories(res.data.data);
             setloader(false)
-            // ذخیره داده‌های زیر دسته‌ها
           } else {
             setloader(false)
-            setData(res.data.data);  // ذخیره داده‌های اصلی
+            setData(res.data.data); 
           }
         }
       })
-      .catch(err => {});
+      .catch(err => {
+        console.log(err);
+      });
   }, [params, selectedCategoryId, flag]);
 
   // داده‌های اصلی
@@ -99,7 +100,6 @@ const Categories = () => {
 
   // فیلدهای اضافی برای زیر دسته‌ها
   const SubCategoryAdditionalFeild = [
-
     {
       title: 'تاریخ ایجاد',
       elements: (rowdata) => moment(rowdata.create_at).format('jYYYY/jMM/jDD'),
@@ -109,7 +109,6 @@ const Categories = () => {
       elements: (rowdata) => additionalElements(rowdata),
     },
   ];
-
 
 
   // فیلدهای اضافی برای عملیات

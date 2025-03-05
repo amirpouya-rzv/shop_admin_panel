@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import jMoment from "jalali-moment";
 import { FaSpinner } from "react-icons/fa";
 import { urlAxios } from "../../Services/URL";
-import { setDashboardChart } from "../../component/dashboardChart"; // وارد کردن تابع
+import { setDashboardChart } from "../../component/dashboardChart";
 
 const labels = [
   "فروردین",

@@ -9,8 +9,6 @@ import toast, { Toaster } from "react-hot-toast";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import FormikControl from "../../component/form/FormikControl";
 import * as Yup from "yup";
-import { IoIosCloseCircleOutline } from "react-icons/io";
-import Loader from "../../component/loader/Loader";
 
 const Colors = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -20,23 +18,26 @@ const Colors = () => {
     const [data, setData] = useState([]);
     const [editcolor, setEditColor] = useState(null);
 
+
+    // بستن مدال
     const handleModalClose = () => {
         setIsModalOpen(false);
         setEditColor(null);
     };
 
+    // تابع حذف در مدال
     const handleDeleteModalOpen = (id) => {
         setItemIdToDelete(id);
         setIsDeleteModalOpen(true);
     };
 
     const handleDeleteModalClose = () => setIsDeleteModalOpen(false);
-
+    //فیلدهای اصلی جدول
     const datainfo = [
         { feild: "title", title: "عنوان" },
         { feild: "code", title: "کد رنگ" },
     ];
-
+    // فیلدهای اضافی حدول
     const AdditionalFeild = [
         {
             title: "نمایش رنگ",
@@ -53,12 +54,15 @@ const Colors = () => {
         },
     ];
 
+    //قسمت جستو جو
     const searchparams = {
         title: "جستجو",
         placeholder: "قسمتی از عنوان رو جست و جو کنید",
         searchfeild: "title"
     };
 
+
+    // دکمه ها(حذف و ویرایش)
     const additionalElements = ({ id }) => (
         <div className="text-xl text-center flex justify-center gap-1 items-center">
             <button title="ویرایش" onClick={() => handleModalOpen(id)}>
@@ -70,16 +74,20 @@ const Colors = () => {
         </div>
     );
 
+    //اعتبار سنجی
     const validationSchema = Yup.object({
         title: Yup.string().required("عنوان  ضروری است"),
         code: Yup.string().required("کد رنگ ضروری است"),
     });
+
 
     const initialvalues = {
         title: "",
         code: "",
     };
 
+
+//دریافت داده ها
     useEffect(() => {
         setLoader(true);
         urlAxios
@@ -94,6 +102,8 @@ const Colors = () => {
             });
     }, []);
 
+
+    // ویرایش
     const handleModalOpen = (id) => {
         setIsModalOpen(true);
         setLoader(true);
@@ -109,6 +119,8 @@ const Colors = () => {
             });
     };
 
+
+    //حذف
     const handleDeleteConfirm = (id) => {
         urlAxios
             .delete(`admin/colors/${id}`)
@@ -122,6 +134,7 @@ const Colors = () => {
         setIsDeleteModalOpen(false);
     };
 
+        //سابمیت فرم
     const onSubmit = (values) => {
         setLoader(true);
         if (values.id) {

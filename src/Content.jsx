@@ -32,11 +32,11 @@ function Content() {
 
         {/* دسته بندی محصولات */}
         <Route path='/admin/categories' element={<CategoriesTable />}>
-          <Route path=':categoriesId' />
+          <Route path=':categoriesId' element={<CategoriesTable />} />
         </Route>
-        <Route path={'/admin/categories/addcategories'} element={<Addcategories />} >
-          <Route path=':CategoriesId' />
-        </Route>
+        <Route path='/admin/categories/addcategories' element={<Addcategories />} />
+        <Route path='/admin/categories/addcategories/:CategoriesId' element={<Addcategories />} />
+
 
         {/* گارانتیها */}
         <Route path='/admin/garranty' element={<Grranty />} />

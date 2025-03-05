@@ -7,7 +7,6 @@ function Breadcrumb() {
 
   return (
     <nav className="p-4 bg-gradient-to-r font-2xl font-elMessiri">
-      {/* <span className="text-gray-500 text-2xl font-semibold mb-3 block text-center"> مدیریت فروشگاه آنلاین</span> */}
       <ol className="flex text-sm space-x-3">
         <li>
           <Link
@@ -15,7 +14,7 @@ function Breadcrumb() {
             className="text-blue-700 text-base font-semibold hover:text-blue-900 transition-all duration-300 ease-in-out"
           >
             <span className="bg-blue-200 px-3 py-1 rounded-full shadow-md transform hover:scale-110">
-              Dashbord
+              داشبرد
             </span>
           </Link>
         </li>
