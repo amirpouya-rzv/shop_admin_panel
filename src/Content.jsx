@@ -32,8 +32,9 @@ function Content() {
 
         {/* دسته بندی محصولات */}
         <Route path='/admin/categories' element={<CategoriesTable />}>
-          <Route path=':categoriesId' element={<CategoriesTable />} />
+          {/* <Route path=':categoriesId' element={<CategoriesTable />} /> */}
         </Route>
+        <Route path='/admin/categories/categoriesId' element={<CategoriesTable />} />
         <Route path='/admin/categories/addcategories' element={<Addcategories />} />
         <Route path='/admin/categories/addcategories/:CategoriesId' element={<Addcategories />} />
 

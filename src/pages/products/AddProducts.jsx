@@ -176,10 +176,10 @@ function AddProducts() {
     urlAxios
       .post("admin/products", values)
       .then((res) => {
-        toast.success(res.data.data);
+        toast.success(res.data.message);
       })
       .catch((err) => {
-        toast.error("مشکلی پیش آمده است!");
+        toast.error("مشکلی پیش آمده است");
         console.error("Error: ", err);
       });
   };

@@ -32,8 +32,9 @@ const AddCategories = () => {
         urlAxios.get(`/admin/categories`).then(res => {
             if (res.status === 200) {
                 setParentCategories(res.data.data.map(p => ({ id: p.id, value: p.title })));
+                // toast.success("دسته‌بندی‌ها با موفقیت اضافه شد");
             } else {
-                toast.error("مشکل در دریافت اطلاعات دسته‌بندی‌ها");
+                // toast.error("مشکل در دریافت اطلاعات دسته‌بندی‌ها");
             }
         }).catch();
     }, []);

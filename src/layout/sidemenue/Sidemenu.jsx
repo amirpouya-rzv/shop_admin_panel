@@ -148,7 +148,7 @@ function Sidemenu() {
             </div>
           </div>
 
-          <NavLink
+          {/* <NavLink
             onClick={changemenubbutton}
             to="/admin/essay"
             className={({ isActive }) =>
@@ -159,7 +159,7 @@ function Sidemenu() {
               مقالات
               <PiReadCvLogoBold size={20} />
             </span>
-          </NavLink>
+          </NavLink> */}
 
           <NavLink
             onClick={changemenubbutton}

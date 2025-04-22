@@ -57,11 +57,11 @@ const AddRole = () => {
                 toast.success(roleToEdit ? "نقش با موفقیت ویرایش شد" : "نقش با موفقیت اضافه شد");
                 navigate("/admin/roles");  
             } else {
-                toast.error("مشکلی در ثبت نقش پیش آمد!");
+                toast.error("مشکلی در ثبت نقش پیش آمد");
             }
         } catch (error) {
             console.error("خطا در ارسال درخواست:", error);
-            toast.error("مشکلی در ارتباط با سرور پیش آمد!");
+            toast.error("مشکلی در ارتباط با سرور پیش آمد");
         } finally {
             setSubmitting(false);
         }

@@ -43,13 +43,13 @@ const ProductTable = () => {
     }, []);
 
     return (
-        <div className="w-full h-full p-4 overflow-auto">
+        <div className="w-full h-full p-4 overflow-auto mt-20 ">
             <p className="text-center mt-3 text-gray-800 text-lg font-semibold">
                 محصولات رو به اتمام
             </p>
             {loading ? (
 <></>            ) : fewerProducts.length === 0 ? (
-                <strong className="text-blue-500">
+                <strong className="text-teal-600 mx-72 ">
                     فعلا محصول رو به اتمامی وجود ندارد
                 </strong>
             ) : (
