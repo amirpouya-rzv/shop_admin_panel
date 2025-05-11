@@ -7,12 +7,20 @@ function File(props) {
     const handleFileChange = (e, field, form) => {
         const file = e.target.files[0];
         if (file) {
+            // بررسی نوع فایل
+            if (!["image/jpeg", "image/png"].includes(file.type)) {
+                form.setFieldError(name, "فقط فایل‌های JPEG و PNG مجاز هستند");
+                return;
+            }
+
             // بررسی حجم فایل
             if (file.size > 2 * 1024 * 1024) {
                 form.setFieldError(name, "اندازه فایل نباید بیشتر از ۲ مگابایت باشد");
                 return;
             }
+
             form.setFieldValue(name, file);
+            form.setFieldError(name, undefined); // پاک‌سازی خطاهای قبلی
 
             // ذخیره پیش‌نمایش
             const reader = new FileReader();
@@ -35,7 +43,7 @@ function File(props) {
                             type="file"
                             id={name}
                             onChange={(e) => handleFileChange(e, field, form)}
-                            accept="image/jpeg,image/png"
+                            accept="image/jpg,image/png"
                         />
                         {form.values[`${name}_preview`] && (
                             <img
@@ -47,7 +55,10 @@ function File(props) {
                         {form.values[name] && (
                             <button
                                 type="button"
-                                onClick={() => form.setFieldValue(name, null)}
+                                onClick={() => {
+                                    form.setFieldValue(name, null);
+                                    form.setFieldValue(`${name}_preview`, null);
+                                }}
                                 className="text-red-500 text-xs mt-2"
                             >
                                 حذف فایل

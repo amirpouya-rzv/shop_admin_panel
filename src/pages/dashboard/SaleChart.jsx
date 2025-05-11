@@ -68,7 +68,7 @@ const SaleChart = () => {
   }, []);
 
   return (
-    <div className="w-full lg:w-1/2 p-4">
+    <div className="w-full lg:w-10/12 p-4">
       {loading ? (
         <div className="flex justify-center items-center text-blue-500">
           <FaSpinner className="animate-spin text-3xl" />

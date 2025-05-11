@@ -43,16 +43,17 @@ const ProductTable = () => {
     }, []);
 
     return (
-        <div className="w-full h-full p-4 overflow-auto mt-20 ">
-            <p className="text-center mt-3 text-gray-800 text-lg font-semibold">
+        <div className="w-full h-full p-4 overflow-auto  md:mt-20 flex flex-col items-center">
+            <p className="text-center mt-3 text-gray-800 text-lg font-semibold ">
                 محصولات رو به اتمام
             </p>
             {loading ? (
-<></>            ) : fewerProducts.length === 0 ? (
-                <strong className="text-teal-600 mx-72 ">
-                    فعلا محصول رو به اتمامی وجود ندارد
-                </strong>
-            ) : (
+                <></>) : fewerProducts.length === 0 ? (
+                    <strong className="text-teal-600 text-lg font-semibold text-center mt-4 ">
+                        <span className="text-red-500">توجه!</span> در حال حاضر
+                        محصول رو به اتمامی وجود ندارد
+                    </strong>
+                ) : (
                 <div className="overflow-x-auto">
                     <table className="min-w-full text-center border border-gray-300 shadow-md rounded-lg">
                         <thead className="bg-gray-200">

@@ -9,7 +9,7 @@ function Modal({ isOpen, onClose, title, children, footer }) {
       onClick={onClose}
     >
       <div
-        className="bg-white p-5 rounded-lg w-1/2 border border-t-2 border-t-sky-500 border-b-2 border-b-rose-500"
+        className="bg-white p-5 rounded-lg w-11/12 md:w-1/2 border border-t-2 border-t-sky-500 border-b-2 border-b-rose-500"
         onClick={(e) => e.stopPropagation()}
       >
         {/* عنوان مدال */}

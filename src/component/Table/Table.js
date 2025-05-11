@@ -17,7 +17,6 @@ function Table({ data, datainfo, AdditionalFeild, url, searchparams, onAddButton
     // محاسبه کل صفحات
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-    
     // فیلتر داده‌ها براساس جستجو
     useEffect(() => {
         if (searchChat.trim() === "") {
@@ -32,23 +31,24 @@ function Table({ data, datainfo, AdditionalFeild, url, searchparams, onAddButton
         setCurrentPage(1); // هنگام جستجو، صفحه اول را نمایش بده
     }, [data, searchChat, searchparams]);
 
-
     // برش داده‌های جدول برای نمایش صفحه جاری
     const currentData = Array.isArray(filteredData) ? filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage) : [];
 
+    // نمایش اسکلتون
     //نمایش اسکلتون
     useEffect(() => {
         setLADING(true);
-        setTimeout(() => {
-            setFilteredData(data);
+        const timeout = setTimeout(() => {
             setLADING(false);
         }, 1000);
+        return () => clearTimeout(timeout);
     }, [data]);
+
 
     return (
         <div className='mt-5 text-center' style={{ direction: 'rtl' }}>
-            <div className="flex justify-between mx-14 mb-8 items-center">
-                {/* سرچ   */}
+            <div className="flex gap-10 md:justify-between mx-14 mb-8 items-center">
+                {/* سرچ */}
                 <div className="relative w-full max-w-md">
                     <input
                         onChange={(e) => setSearChChat(e.target.value)}
@@ -69,7 +69,7 @@ function Table({ data, datainfo, AdditionalFeild, url, searchparams, onAddButton
                         onAddButtonClick();
                     }
                 }}>
-                    <button className="button text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                    <button className="button text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm md:px-5 md:py-2.5 px-5 py-0.5 text-center me-2 mb-2">
                         +افزودن آیتم
                     </button>
                 </div>
@@ -128,15 +128,17 @@ function Table({ data, datainfo, AdditionalFeild, url, searchparams, onAddButton
                         </thead>
                         <tbody>
                             {currentData.map((item, index) => (
-                                <tr key={index} className='border-b hover:bg-gray-100'>
-                                    {datainfo.map((info, idx) => (
-                                        <td key={idx} className='p-4 text-center border'>{item[info.feild]}</td>
-                                    ))}
-                                    {AdditionalFeild.length > 0 &&
-                                        AdditionalFeild.map((a, idx) => (
-                                            <td key={idx} className='p-4 text-center'>{a.elements(item)}</td>
+                                item && item.id ? (
+                                    <tr key={index} className='border-b hover:bg-gray-100'>
+                                        {datainfo.map((info, idx) => (
+                                            <td key={idx} className='p-4 text-center border'>{item[info.feild]}</td>
                                         ))}
-                                </tr>
+                                        {AdditionalFeild.length > 0 &&
+                                            AdditionalFeild.map((a, idx) => (
+                                                <td key={idx} className='p-4 text-center'>{a.elements(item)}</td>
+                                            ))}
+                                    </tr>
+                                ) : null
                             ))}
                         </tbody>
                     </table>
@@ -160,7 +162,6 @@ function Table({ data, datainfo, AdditionalFeild, url, searchparams, onAddButton
 
                     {/* Page Numbers */}
                     <span className="px-4 py-1">{currentPage} از {totalPages}</span>
-
 
                     <button
                         onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}

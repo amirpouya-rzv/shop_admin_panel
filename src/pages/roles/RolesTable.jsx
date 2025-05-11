@@ -37,12 +37,11 @@ function RolesTable() {
         urlAxios.delete(`admin/roles/${id}`)
             .then(res => {
                 setOpenModal(false);
-                toast.success("محصول مورد نظر با موفقیت حذف شد");
+                toast.success(res?.data?.message);
                 setFlag(!flag)
             })
             .catch(err => {
-                console.error("خطا در حذف محصول:", err);
-                toast.error(`محصول مورد نظر حذف نشد`);
+                toast.error(err?.response?.data?.message);
             });
     };
 
@@ -81,6 +80,7 @@ function RolesTable() {
         urlAxios
             .get(`admin/roles`)
             .then((res) => {
+                
                 setData(res.data.data);
                 setPageCount(res.data.totalPages || 1);
             })

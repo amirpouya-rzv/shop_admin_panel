@@ -39,12 +39,11 @@ function ProductTable() {
         urlAxios.delete(`admin/products/${id}`)
             .then(res => {
                 setOpenModal(false);
-                toast.success("محصول با موفقیت حذف شد!");
+                toast.success(res?.data?.message);
                 setFlag(!flag)
             })
             .catch(err => {
-                console.error("خطا در حذف محصول:", err);
-                toast.error(`محصول مورد نظر حذف نشد`);
+                toast.error(err?.response?.data?.message);
             });
     };
 

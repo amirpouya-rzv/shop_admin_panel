@@ -5,11 +5,13 @@ import SaleChart from './SaleChart'
 
 function Dashbord() {
 
+  document.title = ' داشبرد |  پنل فروشگاهی';
+
 
   return (
     <div>
       <Cards />
-      <div className='flex'>
+      <div className='md:flex md:gap-4 mt-5'>
         <SaleChart />
         <ProductTable />
       </div>

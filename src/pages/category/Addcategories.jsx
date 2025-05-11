@@ -27,15 +27,40 @@ const AddCategories = () => {
         image: null,
     });
 
+
+    const onSubmit = (values, { setSubmitting, resetForm }) => {
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("description", values.description);
+    formData.append("parent_id", values.parent_id || "");
+    formData.append("show_in_menu", values.show_in_menu ? 1 : 0);
+    formData.append("is_active", values.is_active ? 1 : 0);
+
+    const request = CategoriesId
+        ? urlAxios.put(`/admin/categories/${CategoriesId}`, formData)
+        : urlAxios.post(`/admin/categories`, formData);
+
+    request.then(res => {
+        if (res.status === 200 || res.status === 201) {
+            resetForm();
+            setSubmitting(false); 
+            navigate("/admin/categories");
+            toast.success(res?.data?.message);
+        }
+    }).catch(err => {
+                toast.error(err?.response?.data?.message || "خطا در ارسال اطلاعات");
+        setSubmitting(false);
+    });
+};
+
+
+
     //دریافت دسته‌بندی‌ها
     useEffect(() => {
         urlAxios.get(`/admin/categories`).then(res => {
             if (res.status === 200) {
                 setParentCategories(res.data.data.map(p => ({ id: p.id, value: p.title })));
-                // toast.success("دسته‌بندی‌ها با موفقیت اضافه شد");
-            } else {
-                // toast.error("مشکل در دریافت اطلاعات دسته‌بندی‌ها");
-            }
+            } 
         }).catch();
     }, []);
 
@@ -55,7 +80,7 @@ const AddCategories = () => {
                         });
                     }
                 })
-                .catch(err => toast.error("خطا در دریافت اطلاعات دسته برای ویرایش"));
+                .catch(err => toast.error(err?.response?.data?.message || "خطا در بارگذاری اطلاعات"));
         }
     }, [CategoriesId]);
 
@@ -71,28 +96,7 @@ const AddCategories = () => {
             ),
     });
     //ارسال اطلاعات
-    const onSubmit = (values, { setSubmitting, resetForm }) => {
-        const formData = new FormData();
-        formData.append("title", values.title);
-        formData.append("description", values.description);
-        formData.append("parent_id", values.parent_id || "");
-        formData.append("show_in_menu", values.show_in_menu ? 1 : 0);
-        formData.append("is_active", values.is_active ? 1 : 0);
 
-        const request = CategoriesId
-            ? urlAxios.put(`/admin/categories/${CategoriesId}`, formData)
-            : urlAxios.post(`/admin/categories`, formData);
-
-        request.then(res => {
-            if (res.status === 200 || res.status === 201) {
-                toast.success(res.data.data);
-                resetForm();
-                navigate("/admin/categories");
-            }
-        }).catch(err => toast.error("خطا در ارسال اطلاعات"));
-
-        setSubmitting(false);
-    };
 
 
     return (
@@ -146,14 +150,14 @@ const AddCategories = () => {
                 <FormikControl
                     control="switch"
                     name="show_in_menu"
-                    label="نمایش در منو"
+                    label="نمایش در سایت"
                 />
 
-                <FormikControl
+                {/* <FormikControl
                     control="switch"
                     name="is_active"
                     label="وضعیت فعال"
-                />
+                /> */}
 
                 <button type="submit" className="mt-4 bg-dark text-white py-2 px-4 rounded">{productId ? "ویرایش" : "ارسال"}</button>
             </Form>

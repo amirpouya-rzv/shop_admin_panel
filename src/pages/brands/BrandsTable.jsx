@@ -132,13 +132,13 @@ const BrandsTable = () => {
             .then((res) => {
                 setItemIdToDelete(null);
                 if (res.status === 200) {
-                    toast.success(`برند با موفقیت حذف شد`);
+                    toast.success(res?.data?.message);
                     setFlag(!flag);
                 } else {
                 }
             })
             .catch((err) => {
-                toast.error(`اشکال در فرایند حذف`)
+                toast.error(err?.response?.data?.message);
             });
         setIsDeleteModalOpen(false);
     };
@@ -156,13 +156,13 @@ const BrandsTable = () => {
             urlAxios
                 .post(`/admin/brands/${values.id}`, formData)
                 .then((res) => {
-                    toast.success("برند با موفقیت ویرایش  شد");
+                    toast.success(res?.data?.message);
                     setData([...data, res.data.data]);
                     setIsModalOpen(false);
                     setFlag(!flag);
                 })
                 .catch((err) => {
-                    toast.error("مشکلی پیش آمده است");
+                    toast.error(err?.response?.data?.message);
                     console.error(err);
                 })
                 .finally(() => {
@@ -175,12 +175,13 @@ const BrandsTable = () => {
             urlAxios
                 .post("/admin/brands", formData)
                 .then((res) => {
-                    toast.success("برند با موفقیت اضافه شد!");
+                    toast.success(res?.data?.message);
                     setData([...data, res.data.data]);
                     setIsModalOpen(false);
                 })
                 .catch((err) => {
-                    toast.error("مشکلی پیش آمده است!");
+                    toast.error(err?.response?.data?.message);
+                    setLoader(false);
                     console.error(err);
                 })
                 .finally(() => {

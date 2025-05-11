@@ -128,13 +128,13 @@ const GarrantyTable = () => {
             .then((res) => {
                 setItemIdToDelete(null);
                 if (res.status === 200) {
-                    toast.success(res.data.message);
+                    toast.success(res?.data?.message);
                     setFlag(!flag);
                 } else {
                 }
             })
             .catch((err) => {
-                toast.error(err.data.message)
+                toast.error(err?.data?.message)
             });
         setIsDeleteModalOpen(false);
     };
@@ -146,13 +146,13 @@ const GarrantyTable = () => {
             urlAxios
                 .put(`admin/guarantees/${values.id}`, values)
                 .then((res) => {
-                    toast.success(res.data.message);
+                    toast.success(res?.data?.message);
                     setData(res.data.data);
                     setIsModalOpen(false);
                     setFlag(!flag);
                 })
                 .catch((err) => {
-                    toast.error("مشکلی پیش آمده است");
+                    toast.error(err?.response?.data?.message || "خطا در ویرایش");
                     console.error(err);
                 })
                 .finally(() => {
@@ -164,13 +164,13 @@ const GarrantyTable = () => {
             urlAxios
                 .post("admin/guarantees", values)
                 .then((res) => {
-                    toast.success(res.data.message);
+                    toast.success(res?.data?.message);
                     setData(res.data.data);
                     setIsModalOpen(false);
                     setFlag(!flag);
                 })
                 .catch((err) => {
-                    toast.error("مشکلی پیش آمده است!");
+                    toast.error(err?.response?.data?.message || "خطا در ثبت");
                     console.error(err);
                 })
                 .finally(() => {

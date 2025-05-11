@@ -54,14 +54,14 @@ const AddRole = () => {
                 : await urlAxios.post("admin/roles", values);  
 
             if (res.status === 200 || res.status === 201) {
-                toast.success(roleToEdit ? "نقش با موفقیت ویرایش شد" : "نقش با موفقیت اضافه شد");
+                console.log(res.data);
+                toast.success(res?.data?.message);
                 navigate("/admin/roles");  
             } else {
-                toast.error("مشکلی در ثبت نقش پیش آمد");
+                toast.error(res?.response?.data?.message);
             }
         } catch (error) {
-            console.error("خطا در ارسال درخواست:", error);
-            toast.error("مشکلی در ارتباط با سرور پیش آمد");
+            toast.error(error?.response?.data?.message);
         } finally {
             setSubmitting(false);
         }

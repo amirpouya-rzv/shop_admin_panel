@@ -25,14 +25,14 @@ function Login() {
 
     // بررسی صحت شماره تلفن
     if (!data.phone) {
-      newErrors.phone = 'Please enter your phone number';
+      newErrors.phone = 'شماره تلفن را وارد کنید';
     } else if (!/^09\d{9}$/.test(data.phone)) {
-      newErrors.phone = 'Please enter a valid phone number';
+      newErrors.phone = 'شماره تلفن نامعتبر است';
     }
 
     // بررسی صحت رمز عبور
     if (!data.password) {
-      newErrors.password = 'Please enter your password';
+      newErrors.password = 'رمز عبور را وارد کنید';
     }
 
     setErrors(newErrors);
@@ -79,7 +79,7 @@ function Login() {
       })
       .catch((err) => {
         setErrors((prevErrors) => ({
-          ...prevErrors,
+          ...prevErrors,  
           global: 'Login failed. Please check your credentials.',
         }));
       })

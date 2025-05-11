@@ -141,22 +141,22 @@ const Colors = () => {
             urlAxios
                 .put(`admin/colors/${values.id}`, values)
                 .then((res) => {
-                    toast.success(res.data.message);
+                    toast.success(res?.data?.message);
                     setIsModalOpen(false);
                     setEditColor(null);
                     setData(data.map((item) => (item.id === values.id ? res.data.data : item)));
                 })
-                .catch(() => toast.error("مشکلی پیش آمده است"))
+                .catch((err) => toast.error(err?.response?.data?.message))
                 .finally(() => setLoader(false));
         } else {
             urlAxios
                 .post("admin/colors", values)
                 .then((res) => {
-                    toast.success(res.data.message);
+                    toast.success(res?.data?.message);
                     setData([...data, res.data.data]);
                     setIsModalOpen(false);
                 })
-                .catch(() => toast.error("مشکلی پیش آمده است!"))
+                .catch((err) => toast.error(err?.response?.data?.message))
                 .finally(() => setLoader(false));
         }
     };

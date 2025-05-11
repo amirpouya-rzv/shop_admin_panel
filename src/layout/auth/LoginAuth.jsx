@@ -3,6 +3,8 @@ import { Route, Routes } from 'react-router-dom'
 import Login from '../../pages/auth/LogIn'
 
 function LoginAuth() {
+  document.title = '   صفحه ورود |  پنل فروشگاهی ';
+
   return (
     <div>
       <Routes>

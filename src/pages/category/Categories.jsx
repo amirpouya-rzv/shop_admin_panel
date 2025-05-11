@@ -8,7 +8,8 @@ import { VscTypeHierarchySub } from 'react-icons/vsc';
 import { urlAxios } from '../../Services/URL';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import moment from 'jalali-moment';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
+import { IoIosArrowBack } from 'react-icons/io';
 
 
 const Categories = () => {
@@ -30,8 +31,8 @@ const Categories = () => {
   // مدال حذف
   const [flag, setFlag] = useState(false)
   const handleDeleteModalOpen = (id) => {
-    setItemIdToDelete(id);  
-    setIsDeleteModalOpen(true);  
+    setItemIdToDelete(id);
+    setIsDeleteModalOpen(true);
   };
   const handleDeleteModalClose = () => setIsDeleteModalOpen(false);
 
@@ -39,14 +40,15 @@ const Categories = () => {
   const handleDeleteConfirm = (id) => {
     urlAxios.delete(`/admin/categories/${id}`)
       .then(res => {
-        if (res.status === 201) {
-          toast.success(res.data.message);
+        if (res.status === 200) {
+          toast.success(res?.data?.message);
+          console.log("خطا:", res);
         }
         setFlag(!flag)
       })
       .catch(err => {
         console.log(err);
-        toast.error(err.data.message);
+        toast.error(err?.response?.data?.message || "خطا در حذف");
       });
     setIsDeleteModalOpen(false);
   };
@@ -63,7 +65,7 @@ const Categories = () => {
             setloader(false)
           } else {
             setloader(false)
-            setData(res.data.data); 
+            setData(res.data.data);
           }
         }
       })
@@ -85,11 +87,11 @@ const Categories = () => {
     //   elements: (rowdata) => rowdata.parent_title || "-----",
     // },
     {
-      title: 'تاریخ',
-      elements: (rowdata) => moment(rowdata.creat_at).format('jYYYY/jMM/jDD'),
+      title: 'تاریخ و ساعت',
+      elements: (rowdata) => moment(rowdata.creat_at).locale('fa').format('jYYYY/jMM/jDD - HH:mm  -  dddd '),
     },
     {
-      title: 'نمایش در منو',
+      title: 'نمایش در سایت',
       elements: (rowdata) => showinmenu(rowdata),
     },
     {
@@ -146,8 +148,8 @@ const Categories = () => {
       <span className='text-center'>
         {
           rowdata.show_in_menu ?
-            (<p className='text-white border md:rounded-full bg-teal-800 sm:rounded-none'>موجود هست</p>) :
-            (<p className='text-white border rounded-full bg-rose-800'>موجود نیست</p>)
+            (<p className="inline-flex items-center rounded-md bg-blue-50 px-10 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset">قابل دیدن </p>) :
+            (<p className="inline-flex items-center rounded-md bg-pink-50 px-8 py-1 text-xs font-medium text-pink-700 ring-1 ring-pink-700/10 ring-inset">غیر قابل دیدن</p>)
         }
       </span>
     );
@@ -165,6 +167,30 @@ const Categories = () => {
 
   return (
     <div>
+      {/* دکمه بازگشت به دسته‌های اصلی */}
+      {selectedCategoryId && (
+        <div className="flex justify-between items-center mb-10 mt-5 px-2 sm:px-4 mx-10">
+
+          <button
+            onClick={() => setSelectedCategoryId(null)}
+            className="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white px-4 py-2 rounded-full shadow-md transition duration-200 ease-in-out"
+          >
+            <IoIosArrowBack />
+          </button>
+          <div className="flex items-center gap-3">
+            <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full shadow">
+              {
+                data.find(item => item.id === selectedCategoryId)?.title || 'نامشخص'
+              }
+            </span>
+            <span className="text-gray-700 font-bold text-lg">:زیر دسته‌های</span>
+
+          </div>
+        </div>
+      )}
+
+
+      {/* جدول */}
       <Table
         data={dataToDisplay}
         datainfo={datainfo}
@@ -174,6 +200,12 @@ const Categories = () => {
         loader={loader}
         url={'/admin/categories/addcategories'}
       />
+
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
+      {/* مدال افزودن */}
       <Modal
         AdditionalFeild
         isOpen={isModalOpen}
@@ -198,6 +230,7 @@ const Categories = () => {
         }
       ></Modal>
 
+      {/* مدال حذف */}
       <DeleteModal
         isOpen={isDeleteModalOpen}
         onClose={handleDeleteModalClose}
