@@ -88,7 +88,7 @@ const Categories = () => {
     // },
     {
       title: 'تاریخ و ساعت',
-      elements: (rowdata) => moment(rowdata.creat_at).locale('fa').format('jYYYY/jMM/jDD - HH:mm  -  dddd '),
+      elements: (rowdata) => moment(rowdata.created_at).locale('fa').format('jYYYY/jMM/jDD - HH:mm  -  dddd '),
     },
     {
       title: 'نمایش در سایت',
