@@ -99,7 +99,6 @@ const GarrantyTable = () => {
 
             })
             .catch((err) => {
-                console.error(err);
                 setLoader(false);
             });
     }, [flag]);
@@ -115,7 +114,6 @@ const GarrantyTable = () => {
                 setLoader(false);
             })
             .catch((err) => {
-                console.error(err);
                 setLoader(false);
             });
     }
@@ -153,7 +151,6 @@ const GarrantyTable = () => {
                 })
                 .catch((err) => {
                     toast.error(err?.response?.data?.message || "خطا در ویرایش");
-                    console.error(err);
                 })
                 .finally(() => {
                     setLoader(false);
@@ -171,7 +168,6 @@ const GarrantyTable = () => {
                 })
                 .catch((err) => {
                     toast.error(err?.response?.data?.message || "خطا در ثبت");
-                    console.error(err);
                 })
                 .finally(() => {
                     setLoader(false);

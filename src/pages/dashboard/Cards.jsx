@@ -14,7 +14,6 @@ const Cards = () => {
             const res = await urlAxios.get('admin/orders/orders_statistics');
             if (res.status === 200) {
                 const data = res.data.data;
-                console.log(res.data);
                 const titleMap = {
                     carts: "سبد خرید امروز",
                     pendingOrders: "سفارشات مانده امروز",
@@ -43,7 +42,6 @@ const Cards = () => {
                 setCardInfos(newCardObj);
             }
         } catch (err) {
-            console.error('Error fetching data:', err);
         } finally {
             setLoading(false);
         }

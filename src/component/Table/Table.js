@@ -14,6 +14,7 @@ function Table({ data, datainfo, AdditionalFeild, url, searchparams, onAddButton
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5; // Number of items per page
 
+
     // محاسبه کل صفحات
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 

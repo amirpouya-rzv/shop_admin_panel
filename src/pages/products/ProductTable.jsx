@@ -89,7 +89,6 @@ function ProductTable() {
                 setPageCount(res.data.totalPages || 1);
             })
             .catch((err) => {
-                console.error("خطا در دریافت داده‌ها:", err);
             })
             .finally(() => {
                 setLoading(false);

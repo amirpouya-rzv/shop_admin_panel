@@ -97,7 +97,6 @@ const Colors = () => {
                 setLoader(false);
             })
             .catch((err) => {
-                console.error(err);
                 setLoader(false);
             });
     }, []);
@@ -114,7 +113,6 @@ const Colors = () => {
                 setLoader(false);
             })
             .catch((err) => {
-                console.error(err);
                 setLoader(false);
             });
     };

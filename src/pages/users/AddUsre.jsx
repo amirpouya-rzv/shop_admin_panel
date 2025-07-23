@@ -63,21 +63,18 @@
 //   useEffect(() => {
 //     urlAxios.get('admin/roles')
 //       .then(res => {
-//         console.log(res);
 //         if (res.status === 200) {
 //           setAllRolse(res.data.data.map(x => {
 //             return ({ id: x.id, value: x.title })
 //           }))
 //         }
 //       })
-//       .catch(err => { console.log(err); })
 //   })
 
 //   //ویرایش
 //   const handlegetuserId = (userId) => {
 //     urlAxios.get('admin/users/{userId}')
 //       .then(res => {
-//         console.log(res);
 //         if (res.status === 200) {
 //           setUserToEdit(res.data.data)
 //         }
@@ -122,7 +119,6 @@
 //       })
 //       .finally(() => setLoader(false));
 
-//     console.log(values);
 //     setLoader(false);
 //   };
 

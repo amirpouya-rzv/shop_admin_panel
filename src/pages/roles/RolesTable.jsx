@@ -85,7 +85,6 @@ function RolesTable() {
                 setPageCount(res.data.totalPages || 1);
             })
             .catch((err) => {
-                console.error("Error fetching roles:", err);
             })
             .finally(() => {
                 setLoading(false);

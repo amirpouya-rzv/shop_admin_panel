@@ -77,11 +77,8 @@ function AddProducts() {
               value: d.title,
             }))
           );
-        } else {
-          console.error("Data structure is not as expected");
         }
       })
-      .catch((err) => console.error("Error fetching data: ", err));
   }, []);
 
 
@@ -102,7 +99,6 @@ function AddProducts() {
         }
       })
       .catch((err) => {
-        console.error("Error fetching brands: ", err);
         setBrands([]);
       });
   };
@@ -120,7 +116,6 @@ function AddProducts() {
           );
         }
       })
-      .catch((err) => console.error("Error fetching colors: ", err));
   };
 
   const getAllGuarantees = () => {
@@ -136,7 +131,6 @@ function AddProducts() {
           );
         }
       })
-      .catch((err) => console.error("Error fetching guarantees: ", err));
   };
 
   useEffect(() => {
@@ -159,7 +153,6 @@ function AddProducts() {
         })
         .catch((err) => {
           setMainCategories(null);
-          console.error("Error fetching main categories: ", err);
         });
     }
   };

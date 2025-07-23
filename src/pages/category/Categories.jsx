@@ -42,12 +42,10 @@ const Categories = () => {
       .then(res => {
         if (res.status === 200) {
           toast.success(res?.data?.message);
-          console.log("خطا:", res);
         }
         setFlag(!flag)
       })
       .catch(err => {
-        console.log(err);
         toast.error(err?.response?.data?.message || "خطا در حذف");
       });
     setIsDeleteModalOpen(false);
@@ -70,7 +68,6 @@ const Categories = () => {
         }
       })
       .catch(err => {
-        console.log(err);
       });
   }, [params, selectedCategoryId, flag]);
 

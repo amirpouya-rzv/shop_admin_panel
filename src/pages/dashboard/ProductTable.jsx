@@ -20,7 +20,6 @@ const ProductTable = () => {
             })
             .catch((err) => {
                 setLoading(false);
-                console.error(err);
             });
     };
 
@@ -34,7 +33,6 @@ const ProductTable = () => {
                 }
             })
             .catch((err) => {
-                console.error(err);
             });
     };
 

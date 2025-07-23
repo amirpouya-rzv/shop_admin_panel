@@ -42,7 +42,6 @@
 //                 setFlag(!flag)
 //             })
 //             .catch(err => {
-//                 console.error("خطا در حذف محصول:", err);
 //                 toast.error(`محصول مورد نظر حذف نشد`);
 //             });
 //     };
@@ -108,12 +107,10 @@
 //         urlAxios
 //             .get(`admin/users?page=${currentPage}&limit=${countOnPage}&search=${searchChar}`)
 //             .then((res) => {
-//                 console.log(res);
 //                 setData(res.data.data.data);
 //                 setPageCount(res.data.data.last_page || 1);
 //             })
 //             .catch((err) => {
-//                 console.error("خطا در دریافت داده‌ها:", err);
 //             })
 //             .finally(() => {
 //                 setLoading(false);

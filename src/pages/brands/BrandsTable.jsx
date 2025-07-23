@@ -120,7 +120,6 @@ const BrandsTable = () => {
 
             })
             .catch((err) => {
-                console.error(err);
                 setLoader(false);
             });
     }, [flag]);
@@ -163,7 +162,6 @@ const BrandsTable = () => {
                 })
                 .catch((err) => {
                     toast.error(err?.response?.data?.message);
-                    console.error(err);
                 })
                 .finally(() => {
                     setLoader(false);
@@ -182,7 +180,6 @@ const BrandsTable = () => {
                 .catch((err) => {
                     toast.error(err?.response?.data?.message);
                     setLoader(false);
-                    console.error(err);
                 })
                 .finally(() => {
                     setLoader(false);
@@ -205,7 +202,6 @@ const BrandsTable = () => {
 
             })
             .catch((err) => {
-                console.error(err);
                 setLoader(false);
             });
     }

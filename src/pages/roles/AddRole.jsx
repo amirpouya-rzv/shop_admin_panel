@@ -35,7 +35,6 @@ const AddRole = () => {
                     setPermissions(res.data.data.map(p => ({ id: p.id, title: p.description })));
                 }
             })
-            .catch(err => console.error("خطا در دریافت دسترسی‌ها:", err));
     }, []);
 
     // اعتبارسنجی فرم
@@ -54,7 +53,6 @@ const AddRole = () => {
                 : await urlAxios.post("admin/roles", values);  
 
             if (res.status === 200 || res.status === 201) {
-                console.log(res.data);
                 toast.success(res?.data?.message);
                 navigate("/admin/roles");  
             } else {

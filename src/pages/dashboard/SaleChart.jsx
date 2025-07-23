@@ -59,7 +59,6 @@ const SaleChart = () => {
       })
       .catch(err => {
         setLoading(false);
-        console.error("Error fetching data:", err);
       });
   };
 

@@ -43,7 +43,6 @@ const SeeallRoles = () => {
 
             })
             .catch((err) => {
-                console.error(err);
                 setLoader(false);
             });
     }, [flag]);
