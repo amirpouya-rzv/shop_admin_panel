@@ -22,7 +22,7 @@ const App = (menubutton) => {
     if (loginToken) {
       setIsLoading(true);
       axios
-        .get("http://ecomadminapi.azhadev.ir/api/auth/user", {
+        .get("https://ecomadminapi.azhadev.ir/api/auth/user", {
           headers: {
             Authorization: `Bearer ${loginToken.token}`,
           },
