@@ -36,7 +36,7 @@ function Login() {
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; 
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleInputChange = (e) => {
@@ -63,7 +63,7 @@ function Login() {
   const sendData = (e) => {
     e.preventDefault();
 
-    if (!validateInputs()) return; 
+    if (!validateInputs()) return;
     setSubmit(true);
 
     urlAxios.post('/auth/login', {
@@ -73,13 +73,13 @@ function Login() {
       .then((res) => {
         if (res.status === 200) {
           localStorage.setItem('loginToken', JSON.stringify(res.data));
-          navigate('/'); 
+          navigate('/');
           toast.success(res.data.message)
         }
       })
       .catch((err) => {
         setErrors((prevErrors) => ({
-          ...prevErrors,  
+          ...prevErrors,
           global: 'Login failed. Please check your credentials.',
         }));
       })
@@ -167,11 +167,16 @@ function Login() {
                   'ورود'
                 )}
               </button>
+              <div style={{direction :"rtl"}}>
+                <h1>شماره همراه :  09110000000</h1>
+                <h1>رمز عبور :123456</h1>
+              </div>
               {errors.global && <span className="text-red-500 text-center mt-3 animate-pulse">{errors.global}</span>}
             </form>
           </div>
         </div>
       </div>
+
     </>
   );
 }
